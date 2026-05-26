@@ -21,6 +21,9 @@ body {
     min-height: 100vh;
 }
 
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; font-family: inherit; }
+
 .font-display {
     font-family: "Playfair Display", Georgia, serif;
 }
@@ -51,6 +54,7 @@ body {
     font-family: inherit;
     font-size: 0.95rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    -webkit-appearance: none;
 }
 
 .lux-input:focus {
@@ -69,6 +73,8 @@ body {
     filter: invert(1) brightness(0.8);
     cursor: pointer;
 }
+
+/* ---- Slot Chips ---- */
 
 .slot-chip {
     display: grid;
@@ -118,6 +124,8 @@ body {
     color: #f2d78a;
 }
 
+/* ---- Toast Notification ---- */
+
 .toast {
     position: fixed;
     right: 1rem;
@@ -129,6 +137,7 @@ body {
     background: rgba(12, 12, 12, 0.92);
     color: #ffffff;
     padding: 1rem 1.15rem;
+    font-size: 0.9rem;
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(18px);
     animation: slideUp 0.3s ease both;
@@ -153,6 +162,8 @@ body {
     border-color: rgba(244, 63, 94, 0.45);
 }
 
+/* ---- Success Modal ---- */
+
 .modal-pop {
     animation: pop 0.35s ease both;
 }
@@ -168,18 +179,22 @@ body {
     }
 }
 
+/* ---- Admin Desktop Sidebar Nav ---- */
+
 .admin-nav {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     border-radius: 1rem;
     padding: 0.85rem 1rem;
+    font-size: 0.9rem;
     transition: color 0.2s ease, background 0.2s ease;
 }
 
 .admin-nav svg {
     width: 1.1rem;
     height: 1.1rem;
+    flex-shrink: 0;
 }
 
 .admin-nav:hover,
@@ -187,6 +202,38 @@ body {
     background: rgba(214, 181, 109, 0.12);
     color: #f2d78a;
 }
+
+/* ---- Admin Mobile Sidebar Nav ---- */
+
+.admin-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 0.85rem;
+    padding: 0.8rem 1rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.65);
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.admin-sidebar-link svg {
+    flex-shrink: 0;
+    color: rgba(214, 181, 109, 0.6);
+}
+
+.admin-sidebar-link:hover,
+.admin-sidebar-link.active {
+    background: rgba(214, 181, 109, 0.12);
+    color: #f2d78a;
+}
+
+.admin-sidebar-link:hover svg,
+.admin-sidebar-link.active svg {
+    color: #f2d78a;
+}
+
+/* ---- Stat Cards & Panels ---- */
 
 .stat-card,
 .admin-panel-luxe {
@@ -197,7 +244,13 @@ body {
 }
 
 .stat-card {
-    padding: 1.25rem;
+    padding: 1rem 1.15rem;
+}
+
+@media (min-width: 640px) {
+    .stat-card {
+        padding: 1.25rem;
+    }
 }
 
 .stat-card svg {
@@ -208,27 +261,42 @@ body {
 
 .stat-card span {
     display: block;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     color: rgba(255, 255, 255, 0.55);
-    font-size: 0.86rem;
+    font-size: 0.78rem;
     font-weight: 700;
+}
+
+@media (min-width: 640px) {
+    .stat-card span {
+        margin-top: 1rem;
+        font-size: 0.86rem;
+    }
 }
 
 .stat-card strong {
     display: block;
-    margin-top: 0.35rem;
-    font-size: 2rem;
+    margin-top: 0.3rem;
+    font-size: 1.6rem;
+}
+
+@media (min-width: 640px) {
+    .stat-card strong {
+        font-size: 2rem;
+    }
 }
 
 .admin-panel-luxe {
-    padding: 1.25rem;
+    padding: 1.15rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
     .admin-panel-luxe {
         padding: 1.5rem;
     }
 }
+
+/* ---- Status Badges ---- */
 
 .status-badge {
     display: inline-flex;
@@ -237,8 +305,9 @@ body {
     border: 0;
     border-radius: 999px;
     padding: 0.38rem 0.7rem;
-    font-size: 0.76rem;
+    font-size: 0.72rem;
     font-weight: 800;
+    font-family: inherit;
 }
 
 .status-badge.pending {
@@ -261,29 +330,53 @@ body {
     color: #fecdd3;
 }
 
+/* ---- Slot Admin Cards ---- */
+
 .slot-admin-card {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1.4rem;
-    padding: 1rem;
+    border-radius: 1.2rem;
+    padding: 0.85rem;
+}
+
+@media (min-width: 640px) {
+    .slot-admin-card {
+        border-radius: 1.4rem;
+        padding: 1rem;
+    }
 }
 
 .slot-admin-card span {
     border-radius: 999px;
     padding: 0.28rem 0.58rem;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 800;
     text-transform: uppercase;
 }
 
+@media (min-width: 640px) {
+    .slot-admin-card span {
+        font-size: 0.72rem;
+    }
+}
+
 .slot-admin-card p {
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     font-weight: 800;
+    font-size: 0.88rem;
+}
+
+@media (min-width: 640px) {
+    .slot-admin-card p {
+        margin-top: 1rem;
+        font-size: 1rem;
+    }
 }
 
 .slot-admin-card small {
     display: block;
     margin-top: 0.25rem;
     color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
 }
 
 .slot-admin-card.available {
@@ -313,12 +406,16 @@ body {
     color: #cbd5e1;
 }
 
+/* ---- Action Buttons ---- */
+
 .admin-action,
 button.small {
     border-radius: 0.95rem;
     background: #d6b56d;
     color: #050505;
     font-weight: 800;
+    font-family: inherit;
+    font-size: 0.88rem;
     transition: transform 0.2s ease, background 0.2s ease;
 }
 
@@ -348,6 +445,8 @@ button.danger {
 button.danger:hover {
     background: rgba(244, 63, 94, 0.28);
 }
+
+/* ---- Responsive Toast ---- */
 
 @media (max-width: 640px) {
     .toast {

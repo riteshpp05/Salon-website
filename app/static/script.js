@@ -66,7 +66,51 @@ function refreshIcons() {
 
 refreshIcons();
 
-// ---- Date-aware slot refresh ---- //
+// ---- Generic Sidebar Helper ---- //
+
+function setupSidebar(openBtnId, closeBtnId, sidebarId, overlayId, direction) {
+    const openBtn = document.getElementById(openBtnId);
+    const closeBtn = document.getElementById(closeBtnId);
+    const sidebar = document.getElementById(sidebarId);
+    const overlay = document.getElementById(overlayId);
+
+    const hideClass = direction === "left" ? "-translate-x-full" : "translate-x-full";
+    const showClass = direction === "left" ? "translate-x-0" : "translate-x-0";
+
+    function open() {
+        if (!sidebar || !overlay) return;
+        overlay.classList.remove("hidden");
+        sidebar.classList.remove(hideClass);
+        sidebar.classList.add(showClass);
+        document.body.style.overflow = "hidden";
+        refreshIcons();
+    }
+
+    function close() {
+        if (!sidebar || !overlay) return;
+        sidebar.classList.remove(showClass);
+        sidebar.classList.add(hideClass);
+        overlay.classList.add("hidden");
+        document.body.style.overflow = "";
+    }
+
+    if (openBtn) openBtn.addEventListener("click", open);
+    if (closeBtn) closeBtn.addEventListener("click", close);
+    if (overlay) overlay.addEventListener("click", close);
+
+    // Close on link click
+    if (sidebar) {
+        sidebar.querySelectorAll("a, .sidebar-link, .admin-sidebar-link").forEach((link) => {
+            link.addEventListener("click", close);
+        });
+    }
+}
+
+// Index page sidebar (slides from right)
+setupSidebar("mobileMenuBtn", "closeSidebarBtn", "mobileSidebar", "sidebarOverlay", "right");
+
+// Admin page sidebar (slides from left)
+setupSidebar("adminMenuBtn", "closeAdminSidebar", "adminSidebar", "adminOverlay", "left");
 
 async function refreshSlotsForDate(dateValue) {
     if (!dateValue) {

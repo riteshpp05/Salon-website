@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css?v=4">
+    <link rel="stylesheet" href="/static/style.css?v=5">
 </head>
 <body class="bg-[#080808] text-white antialiased">
     <!-- Navigation -->
@@ -26,17 +26,61 @@
                     <span class="block text-xs uppercase tracking-[0.28em] text-[#d6b56d]">Salon Studio</span>
                 </span>
             </a>
+            <!-- Desktop nav links -->
             <div class="hidden items-center gap-8 text-sm font-semibold text-white/70 md:flex">
                 <a class="transition hover:text-[#f2d78a]" href="#services">Services</a>
                 <a class="transition hover:text-[#f2d78a]" href="#booking">Booking</a>
                 <a class="transition hover:text-[#f2d78a]" href="#contact">Contact</a>
                 <a class="transition hover:text-[#f2d78a]" href="/admin">Admin</a>
             </div>
-            <a href="#booking" class="rounded-full bg-[#d6b56d] px-5 py-2.5 text-sm font-bold text-black shadow-[0_0_35px_rgba(214,181,109,0.35)] transition hover:bg-[#f2d78a]">
+            <div class="flex items-center gap-3">
+                <a href="#booking" class="hidden rounded-full bg-[#d6b56d] px-5 py-2.5 text-sm font-bold text-black shadow-[0_0_35px_rgba(214,181,109,0.35)] transition hover:bg-[#f2d78a] md:inline-flex">
+                    Book Now
+                </a>
+                <!-- Mobile hamburger button -->
+                <button id="mobileMenuBtn" type="button" class="grid h-11 w-11 place-items-center rounded-xl border border-white/12 bg-white/8 text-white/80 transition hover:bg-white/12 hover:text-[#f2d78a] md:hidden" aria-label="Open menu">
+                    <i data-lucide="menu" class="h-5 w-5"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 z-[60] hidden bg-black/60 backdrop-blur-sm"></div>
+
+    <!-- Mobile Sidebar -->
+    <aside id="mobileSidebar" class="fixed top-0 right-0 z-[70] flex h-full w-72 translate-x-full flex-col border-l border-white/10 bg-[#0c0c0c]/95 backdrop-blur-2xl transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
+            <span class="font-display text-lg font-bold text-[#f2d78a]">Menu</span>
+            <button id="closeSidebarBtn" type="button" class="grid h-10 w-10 place-items-center rounded-xl border border-white/12 bg-white/8 text-white/70 transition hover:bg-white/12 hover:text-white" aria-label="Close menu">
+                <i data-lucide="x" class="h-5 w-5"></i>
+            </button>
+        </div>
+        <nav class="flex flex-1 flex-col gap-1 px-4 py-5">
+            <a href="#services" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3.5 text-[0.95rem] font-semibold text-white/75 transition hover:bg-[#d6b56d]/12 hover:text-[#f2d78a]">
+                <i data-lucide="scissors" class="h-5 w-5 text-[#d6b56d]/70"></i>
+                Services
+            </a>
+            <a href="#booking" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3.5 text-[0.95rem] font-semibold text-white/75 transition hover:bg-[#d6b56d]/12 hover:text-[#f2d78a]">
+                <i data-lucide="calendar-check" class="h-5 w-5 text-[#d6b56d]/70"></i>
+                Booking
+            </a>
+            <a href="#contact" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3.5 text-[0.95rem] font-semibold text-white/75 transition hover:bg-[#d6b56d]/12 hover:text-[#f2d78a]">
+                <i data-lucide="phone" class="h-5 w-5 text-[#d6b56d]/70"></i>
+                Contact
+            </a>
+            <a href="/admin" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3.5 text-[0.95rem] font-semibold text-white/75 transition hover:bg-[#d6b56d]/12 hover:text-[#f2d78a]">
+                <i data-lucide="shield" class="h-5 w-5 text-[#d6b56d]/70"></i>
+                Admin
+            </a>
+        </nav>
+        <div class="border-t border-white/10 px-5 py-5">
+            <a href="#booking" class="sidebar-link flex w-full items-center justify-center gap-2 rounded-2xl bg-[#d6b56d] px-5 py-3.5 text-sm font-bold text-black shadow-[0_0_25px_rgba(214,181,109,0.25)] transition hover:bg-[#f2d78a]">
+                <i data-lucide="calendar-plus" class="h-4 w-4"></i>
                 Book Now
             </a>
         </div>
-    </nav>
+    </aside>
 
     <main>
         <!-- Hero + Booking Section -->
@@ -240,6 +284,6 @@
         </div>
     </div>
 
-    <script src="/static/script.js?v=4"></script>
+    <script src="/static/script.js?v=5"></script>
 </body>
 </html>
