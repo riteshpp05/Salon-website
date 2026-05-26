@@ -5,4 +5,3 @@ sqlalchemy
 pydantic
 python-multipart
 twilio
-python-dotenv
