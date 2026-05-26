@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="/">Salon Booking</a>
+        <a class="nav-link" href="/">Booking Page</a>
+    </header>
+
+    <main class="page admin-page">
+        <section class="section">
+            <div class="section-heading">
+                <p class="eyebrow">Admin dashboard</p>
+                <h1>Manage bookings, services, and slots</h1>
+            </div>
+        </section>
+
+        <section class="admin-grid">
+            <div class="admin-panel">
+                <h2>Add service</h2>
+                <form id="serviceForm" class="compact-form">
+                    <input type="text" id="serviceName" placeholder="Service name" required>
+                    <input type="text" id="servicePrice" placeholder="Price" required>
+                    <input type="text" id="serviceDuration" placeholder="Duration" required>
+                    <button type="submit">Add Service</button>
+                </form>
+            </div>
+
+            <div class="admin-panel">
+                <h2>Add time slot</h2>
+                <form id="slotForm" class="compact-form">
+                    <input type="text" id="slotValue" placeholder="Example: 05:00 PM" required>
+                    <select id="slotAvailable">
+                        <option value="Yes">Available</option>
+                        <option value="No">Unavailable</option>
+                    </select>
+                    <button type="submit">Add Slot</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Bookings</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Age</th>
+                            <th>Service</th>
+                            <th>Price</th>
+                            <th>Date</th>
+                            <th>Slot</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td>{{ booking.id }}</td>
+                            <td>{{ booking.customer_name }}</td>
+                            <td>{{ booking.phone }}</td>
+                            <td>{{ booking.age }}</td>
+                            <td>{{ booking.service }}</td>
+                            <td>Rs. {{ booking.price }}</td>
+                            <td>{{ booking.appointment_date }}</td>
+                            <td>{{ booking.time_slot }}</td>
+                            <td>
+                                <select class="status-select" data-booking-id="{{ booking.id }}">
+                                    <option value="Pending" {% if booking.status == "Pending" %}selected{% endif %}>Pending</option>
+                                    <option value="Confirmed" {% if booking.status == "Confirmed" %}selected{% endif %}>Confirmed</option>
+                                    <option value="Completed" {% if booking.status == "Completed" %}selected{% endif %}>Completed</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="small danger delete-booking" data-booking-id="{{ booking.id }}">Delete</button>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="10" class="empty">No bookings yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="admin-grid">
+            <div class="admin-panel">
+                <h2>Services</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Duration</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for service in services %}
+                            <tr>
+                                <td>{{ service.name }}</td>
+                                <td>Rs. {{ service.price }}</td>
+                                <td>{{ service.duration }}</td>
+                                <td class="actions">
+                                    <button class="small edit-service"
+                                        data-service-id="{{ service.id }}"
+                                        data-name="{{ service.name }}"
+                                        data-price="{{ service.price }}"
+                                        data-duration="{{ service.duration }}">Edit</button>
+                                    <button class="small danger delete-service" data-service-id="{{ service.id }}">Delete</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="admin-panel">
+                <h2>Time slots</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Slot</th>
+                                <th>Available</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for time_slot in time_slots %}
+                            <tr>
+                                <td>{{ time_slot.slot }}</td>
+                                <td>{{ time_slot.is_available }}</td>
+                                <td class="actions">
+                                    <button class="small edit-slot"
+                                        data-slot-id="{{ time_slot.id }}"
+                                        data-slot="{{ time_slot.slot }}"
+                                        data-available="{{ time_slot.is_available }}">Edit</button>
+                                    <button class="small danger delete-slot" data-slot-id="{{ time_slot.id }}">Delete</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/script.js?v=2"></script>
+</body>
+</html>
