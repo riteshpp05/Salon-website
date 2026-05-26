@@ -36,6 +36,9 @@ Salon Booking/
 - Book appointments with customer name, phone, age, service, date, and slot
 - Show booking confirmation on screen
 - Automatically confirm bookings when the selected date and slot are available
+- Premium Tailwind CSS public website with luxury salon branding
+- Modern admin dashboard with stats, filters, revenue, slot cards, and badges
+- Real slot availability: booked slots become unavailable and disabled in the UI
 - Optional Twilio WhatsApp confirmation for the customer
 - Optional Twilio WhatsApp admin alert to Ritesh patil at +91 7028111146
 - Admin dashboard for bookings, services, and time slots
@@ -61,9 +64,46 @@ Salon Booking/
 ### Time Slot APIs
 
 - `GET /api/time-slots` lists time slots
+- `GET /api/slot-cards` lists visual slot cards with availability and booking owner
+- `GET /api/dashboard-stats` returns admin counters and revenue data
 - `POST /api/time-slots` adds a time slot
 - `PUT /api/time-slots/{time_slot_id}` updates a time slot
 - `DELETE /api/time-slots/{time_slot_id}` deletes a time slot
+
+## Premium Upgrade Notes
+
+Updated folder structure:
+
+```text
+app/
+├── routers/
+│   ├── admin.py
+│   ├── booking.py
+│   └── service.py
+├── static/
+│   ├── favicon.svg
+│   ├── script.js
+│   └── style.css
+├── templates/
+│   ├── admin.html
+│   └── index.html
+├── crud.py
+├── database.py
+├── main.py
+├── models.py
+├── schemas.py
+└── whatsapp.py
+```
+
+Implementation guide:
+
+1. `models.py` defines services, bookings, and time slots. Time slots now track `slot_time`, `is_available`, and `booking_id`.
+2. `crud.py` validates booking conflicts, marks booked slots unavailable, releases slots when bookings are cancelled/completed/deleted, and builds dashboard stats.
+3. `main.py` runs lightweight SQLite column upgrades for existing local databases.
+4. `index.html` uses Tailwind CDN, Lucide icons, a premium hero, live slot cards, and a success modal.
+5. `admin.html` uses Tailwind CDN for the dashboard, stats cards, booking table, status badges, slot visualization, and service management.
+6. `script.js` handles booking, loading states, toast notifications, filters, status updates, and CRUD actions.
+7. `style.css` contains the luxury dark theme, gold accents, glass panels, animations, slot colors, and reusable admin styling.
 
 ## Setup
 

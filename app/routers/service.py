@@ -102,7 +102,10 @@ def add_time_slot(
     db: Session = Depends(get_db)
 ):
 
-    return crud.create_time_slot(db, time_slot)
+    try:
+        return crud.create_time_slot(db, time_slot)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
 
 
 @router.put("/api/time-slots/{time_slot_id}")
@@ -132,3 +135,34 @@ def remove_time_slot(
         raise HTTPException(status_code=404, detail="Time slot not found")
 
     return {"message": "Time slot deleted"}
+
+
+@router.get("/api/slot-cards")
+def slot_cards(
+    db: Session = Depends(get_db)
+):
+
+    return crud.get_slot_cards(db)
+
+
+@router.get("/api/slot-cards/{target_date}")
+def slot_cards_for_date(
+    target_date: str,
+    db: Session = Depends(get_db)
+):
+
+    return crud.get_slot_cards(db, target_date=target_date)
+
+
+@router.get("/api/dashboard-stats")
+def dashboard_stats(
+    db: Session = Depends(get_db)
+):
+
+    stats = crud.get_dashboard_stats(db)
+    popular_service = stats.get("popular_service")
+
+    return {
+        **stats,
+        "popular_service": popular_service[0] if popular_service else "None"
+    }

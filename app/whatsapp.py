@@ -53,13 +53,22 @@ def _create_client():
     return Client(account_sid, auth_token), from_number
 
 
-def send_whatsapp(phone: str, customer_name: str, service: str, slot: str):
+def send_whatsapp(
+    phone: str,
+    customer_name: str,
+    service: str,
+    slot: str,
+    appointment_date: str = "",
+    price: str = ""
+):
     client, from_number = _create_client()
 
     body = f"""Hello {customer_name},
 Your salon booking is confirmed.
 
 Service: {service}
+Price: Rs. {price}
+Date: {appointment_date}
 Time: {slot}
 
 Thank you for booking with us.

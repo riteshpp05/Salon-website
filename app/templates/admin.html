@@ -3,163 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Admin Dashboard · Ritesh Luxe Salon</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=3">
 </head>
-<body>
-    <header class="topbar">
-        <a class="brand" href="/">Salon Booking</a>
-        <a class="nav-link" href="/">Booking Page</a>
-    </header>
+<body class="bg-[#080808] text-white antialiased">
+    <div class="min-h-screen lg:grid lg:grid-cols-[280px_1fr]">
+        <aside class="border-b border-white/10 bg-black/80 p-5 backdrop-blur-xl lg:sticky lg:top-0 lg:h-screen lg:border-b-0 lg:border-r">
+            <a href="/" class="flex items-center gap-3">
+                <span class="grid h-11 w-11 place-items-center rounded-full border border-[#d6b56d]/40 bg-[#d6b56d]/10 text-[#f2d78a]">
+                    <i data-lucide="sparkles" class="h-5 w-5"></i>
+                </span>
+                <span>
+                    <span class="block font-display text-xl font-bold">Ritesh Luxe</span>
+                    <span class="block text-xs uppercase tracking-[0.28em] text-[#d6b56d]">Admin Suite</span>
+                </span>
+            </a>
+            <nav class="mt-10 grid gap-2 text-sm font-semibold text-white/70">
+                <a class="admin-nav active" href="#overview"><i data-lucide="layout-dashboard"></i>Overview</a>
+                <a class="admin-nav" href="#bookings"><i data-lucide="calendar-check"></i>Bookings</a>
+                <a class="admin-nav" href="#slots"><i data-lucide="clock-3"></i>Slots</a>
+                <a class="admin-nav" href="#services"><i data-lucide="scissors"></i>Services</a>
+                <a class="admin-nav" href="/"><i data-lucide="globe"></i>Booking Page</a>
+            </nav>
+        </aside>
 
-    <main class="page admin-page">
-        <section class="section">
-            <div class="section-heading">
-                <p class="eyebrow">Admin dashboard</p>
-                <h1>Manage bookings, services, and slots</h1>
-            </div>
-        </section>
+        <main class="px-5 py-6 lg:px-8">
+            <section id="overview" class="mb-8 flex flex-col justify-between gap-5 rounded-[2rem] border border-white/10 bg-white/[0.05] p-6 shadow-2xl md:flex-row md:items-end">
+                <div>
+                    <p class="text-sm font-bold uppercase tracking-[0.3em] text-[#d6b56d]">Dashboard</p>
+                    <h1 class="mt-3 font-display text-4xl font-bold">Booking command center</h1>
+                    <p class="mt-3 max-w-2xl text-white/60">Track revenue, live slots, customers, and appointment status from one clean dashboard.</p>
+                </div>
+                <div class="rounded-2xl border border-[#d6b56d]/30 bg-[#d6b56d]/10 px-5 py-4 text-[#f2d78a]">
+                    <span class="text-sm text-white/60">Total revenue</span>
+                    <strong class="block text-3xl">Rs. {{ stats.total_revenue }}</strong>
+                </div>
+            </section>
 
-        <section class="admin-grid">
-            <div class="admin-panel">
-                <h2>Add service</h2>
-                <form id="serviceForm" class="compact-form">
-                    <input type="text" id="serviceName" placeholder="Service name" required>
-                    <input type="text" id="servicePrice" placeholder="Price" required>
-                    <input type="text" id="serviceDuration" placeholder="Duration" required>
-                    <button type="submit">Add Service</button>
-                </form>
-            </div>
+            <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                <div class="stat-card">
+                    <i data-lucide="calendar-days"></i>
+                    <span>Total bookings</span>
+                    <strong>{{ stats.total_bookings }}</strong>
+                </div>
+                <div class="stat-card">
+                    <i data-lucide="calendar-clock"></i>
+                    <span>Today bookings</span>
+                    <strong>{{ stats.today_bookings }}</strong>
+                </div>
+                <div class="stat-card">
+                    <i data-lucide="check-circle-2"></i>
+                    <span>Available slots</span>
+                    <strong>{{ stats.available_slots }}</strong>
+                </div>
+                <div class="stat-card">
+                    <i data-lucide="lock"></i>
+                    <span>Booked slots</span>
+                    <strong>{{ stats.booked_slots }}</strong>
+                </div>
+            </section>
 
-            <div class="admin-panel">
-                <h2>Add time slot</h2>
-                <form id="slotForm" class="compact-form">
-                    <input type="text" id="slotValue" placeholder="Example: 05:00 PM" required>
-                    <select id="slotAvailable">
-                        <option value="Yes">Available</option>
-                        <option value="No">Unavailable</option>
-                    </select>
-                    <button type="submit">Add Slot</button>
-                </form>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>Bookings</h2>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Age</th>
-                            <th>Service</th>
-                            <th>Price</th>
-                            <th>Date</th>
-                            <th>Slot</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for booking in bookings %}
-                        <tr>
-                            <td>{{ booking.id }}</td>
-                            <td>{{ booking.customer_name }}</td>
-                            <td>{{ booking.phone }}</td>
-                            <td>{{ booking.age }}</td>
-                            <td>{{ booking.service }}</td>
-                            <td>Rs. {{ booking.price }}</td>
-                            <td>{{ booking.appointment_date }}</td>
-                            <td>{{ booking.time_slot }}</td>
-                            <td>
-                                <select class="status-select" data-booking-id="{{ booking.id }}">
-                                    <option value="Pending" {% if booking.status == "Pending" %}selected{% endif %}>Pending</option>
-                                    <option value="Confirmed" {% if booking.status == "Confirmed" %}selected{% endif %}>Confirmed</option>
-                                    <option value="Completed" {% if booking.status == "Completed" %}selected{% endif %}>Completed</option>
-                                </select>
-                            </td>
-                            <td>
-                                <button class="small danger delete-booking" data-booking-id="{{ booking.id }}">Delete</button>
-                            </td>
-                        </tr>
-                        {% else %}
-                        <tr>
-                            <td colspan="10" class="empty">No bookings yet.</td>
-                        </tr>
+            <section class="mt-6 grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
+                <div class="admin-panel-luxe">
+                    <div class="mb-5 flex items-center justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold uppercase tracking-[0.24em] text-[#d6b56d]">Status mix</p>
+                            <h2 class="mt-2 text-2xl font-bold">Booking visualization</h2>
+                        </div>
+                    </div>
+                    <div class="grid gap-3 sm:grid-cols-4">
+                        {% for status, count in stats.status_counts.items() %}
+                        <div class="rounded-2xl border border-white/10 bg-black/30 p-4">
+                            <span class="status-badge {{ status|lower }}">{{ status }}</span>
+                            <strong class="mt-4 block text-3xl">{{ count }}</strong>
+                        </div>
                         {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </section>
+                    </div>
+                </div>
 
-        <section class="admin-grid">
-            <div class="admin-panel">
-                <h2>Services</h2>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
+                <div class="admin-panel-luxe">
+                    <p class="text-sm font-bold uppercase tracking-[0.24em] text-[#d6b56d]">Revenue</p>
+                    <h2 class="mt-2 text-2xl font-bold">Basic revenue view</h2>
+                    <div class="mt-6 h-4 overflow-hidden rounded-full bg-white/10">
+                        <div class="h-full rounded-full bg-gradient-to-r from-[#d6b56d] to-emerald-300" style="width: {{ 100 if stats.total_revenue > 0 else 8 }}%"></div>
+                    </div>
+                    <div class="mt-5 flex items-center justify-between text-sm text-white/60">
+                        <span>Collected value</span>
+                        <span>Rs. {{ stats.total_revenue }}</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="slots" class="admin-panel-luxe mt-6">
+                <div class="mb-5 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+                    <div>
+                        <p class="text-sm font-bold uppercase tracking-[0.24em] text-[#d6b56d]">Slot calendar</p>
+                        <h2 class="mt-2 text-2xl font-bold">Availability grid</h2>
+                    </div>
+                    <form id="slotForm" class="grid gap-3 sm:grid-cols-[1fr_160px_120px]">
+                        <input class="lux-input" type="text" id="slotValue" placeholder="05:00 PM" required>
+                        <select class="lux-input" id="slotAvailable">
+                            <option value="Yes">Available</option>
+                            <option value="No">Disabled</option>
+                        </select>
+                        <button class="admin-action" type="submit">Add Slot</button>
+                    </form>
+                </div>
+
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {% for slot in slot_cards %}
+                    <div class="slot-admin-card {{ slot.state }}">
+                        <div class="flex items-center justify-between">
+                            <strong>{{ slot.slot_time }}</strong>
+                            <span>{{ slot.state|title }}</span>
+                        </div>
+                        <p>{{ slot.customer_name or "No customer assigned" }}</p>
+                        <small>{{ slot.service or "Ready for booking" }}</small>
+                        <div class="mt-4 flex gap-2">
+                            <button class="small edit-slot"
+                                data-slot-id="{{ slot.id }}"
+                                data-slot="{{ slot.slot_time }}"
+                                data-available="{{ slot.is_available }}">Edit</button>
+                            <button class="small danger delete-slot" data-slot-id="{{ slot.id }}">Delete</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section id="bookings" class="admin-panel-luxe mt-6">
+                <div class="mb-5 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+                    <div>
+                        <p class="text-sm font-bold uppercase tracking-[0.24em] text-[#d6b56d]">Customers</p>
+                        <h2 class="mt-2 text-2xl font-bold">Booking details</h2>
+                    </div>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <input id="bookingSearch" class="lux-input" type="search" placeholder="Search name, phone, service">
+                        <select id="bookingStatusFilter" class="lux-input">
+                            <option value="">All statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-3xl border border-white/10">
+                    <table class="w-full min-w-[1100px] bg-black/30 text-sm">
+                        <thead class="bg-white/[0.06] text-left text-xs uppercase tracking-[0.18em] text-white/45">
                             <tr>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Duration</th>
-                                <th>Action</th>
+                                <th class="px-5 py-4">Customer</th>
+                                <th class="px-5 py-4">Phone</th>
+                                <th class="px-5 py-4">Age</th>
+                                <th class="px-5 py-4">Service</th>
+                                <th class="px-5 py-4">Price</th>
+                                <th class="px-5 py-4">Date</th>
+                                <th class="px-5 py-4">Slot</th>
+                                <th class="px-5 py-4">Status</th>
+                                <th class="px-5 py-4">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {% for service in services %}
-                            <tr>
-                                <td>{{ service.name }}</td>
-                                <td>Rs. {{ service.price }}</td>
-                                <td>{{ service.duration }}</td>
-                                <td class="actions">
-                                    <button class="small edit-service"
-                                        data-service-id="{{ service.id }}"
-                                        data-name="{{ service.name }}"
-                                        data-price="{{ service.price }}"
-                                        data-duration="{{ service.duration }}">Edit</button>
-                                    <button class="small danger delete-service" data-service-id="{{ service.id }}">Delete</button>
+                        <tbody id="bookingTableBody" class="divide-y divide-white/10">
+                            {% for booking in bookings %}
+                            <tr class="booking-row" data-search="{{ booking.customer_name }} {{ booking.phone }} {{ booking.service }}" data-status="{{ booking.status }}">
+                                <td class="px-5 py-4 font-bold">{{ booking.customer_name }}</td>
+                                <td class="px-5 py-4 text-white/65">{{ booking.phone }}</td>
+                                <td class="px-5 py-4 text-white/65">{{ booking.age }}</td>
+                                <td class="px-5 py-4">{{ booking.service }}<span class="block text-xs text-white/45">{{ booking.service_duration }}</span></td>
+                                <td class="px-5 py-4 text-[#f2d78a]">Rs. {{ booking.price }}</td>
+                                <td class="px-5 py-4 text-white/65">{{ booking.appointment_date }}</td>
+                                <td class="px-5 py-4">{{ booking.time_slot }}</td>
+                                <td class="px-5 py-4">
+                                    <select class="status-select status-badge {{ booking.status|lower }}" data-booking-id="{{ booking.id }}">
+                                        <option value="Pending" {% if booking.status == "Pending" %}selected{% endif %}>Pending</option>
+                                        <option value="Confirmed" {% if booking.status == "Confirmed" %}selected{% endif %}>Confirmed</option>
+                                        <option value="Completed" {% if booking.status == "Completed" %}selected{% endif %}>Completed</option>
+                                        <option value="Cancelled" {% if booking.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+                                    </select>
                                 </td>
+                                <td class="px-5 py-4">
+                                    <button class="small danger delete-booking" data-booking-id="{{ booking.id }}">Delete</button>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="9" class="px-5 py-12 text-center text-white/45">No bookings yet. New appointments will appear here.</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </section>
 
-            <div class="admin-panel">
-                <h2>Time slots</h2>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Slot</th>
-                                <th>Available</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for time_slot in time_slots %}
-                            <tr>
-                                <td>{{ time_slot.slot }}</td>
-                                <td>{{ time_slot.is_available }}</td>
-                                <td class="actions">
-                                    <button class="small edit-slot"
-                                        data-slot-id="{{ time_slot.id }}"
-                                        data-slot="{{ time_slot.slot }}"
-                                        data-available="{{ time_slot.is_available }}">Edit</button>
-                                    <button class="small danger delete-slot" data-slot-id="{{ time_slot.id }}">Delete</button>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+            <section id="services" class="admin-panel-luxe mt-6">
+                <div class="mb-5 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+                    <div>
+                        <p class="text-sm font-bold uppercase tracking-[0.24em] text-[#d6b56d]">Menu</p>
+                        <h2 class="mt-2 text-2xl font-bold">Service management</h2>
+                    </div>
+                    <form id="serviceForm" class="grid gap-3 lg:grid-cols-[1fr_120px_140px_130px]">
+                        <input class="lux-input" type="text" id="serviceName" placeholder="Service name" required>
+                        <input class="lux-input" type="text" id="servicePrice" placeholder="Price" required>
+                        <input class="lux-input" type="text" id="serviceDuration" placeholder="Duration" required>
+                        <button class="admin-action" type="submit">Add Service</button>
+                    </form>
                 </div>
-            </div>
-        </section>
-    </main>
 
-    <script src="/static/script.js?v=2"></script>
+                <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                    {% for service in services %}
+                    <div class="rounded-3xl border border-white/10 bg-black/30 p-5">
+                        <div class="mb-5 flex items-center justify-between">
+                            <span class="grid h-11 w-11 place-items-center rounded-2xl bg-[#d6b56d]/15 text-[#f2d78a]"><i data-lucide="scissors"></i></span>
+                            <strong class="text-[#f2d78a]">Rs. {{ service.price }}</strong>
+                        </div>
+                        <h3 class="text-lg font-bold">{{ service.name }}</h3>
+                        <p class="mt-1 text-sm text-white/50">{{ service.duration }}</p>
+                        <div class="mt-5 flex gap-2">
+                            <button class="small edit-service"
+                                data-service-id="{{ service.id }}"
+                                data-name="{{ service.name }}"
+                                data-price="{{ service.price }}"
+                                data-duration="{{ service.duration }}">Edit</button>
+                            <button class="small danger delete-service" data-service-id="{{ service.id }}">Delete</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+    <script src="/static/script.js?v=3"></script>
 </body>
 </html>

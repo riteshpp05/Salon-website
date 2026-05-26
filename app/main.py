@@ -24,6 +24,12 @@ def ensure_booking_columns():
             "ALTER TABLE bookings ADD COLUMN appointment_date "
             "VARCHAR NOT NULL DEFAULT ''"
         ),
+        "service_duration": (
+            "ALTER TABLE bookings ADD COLUMN service_duration "
+            "VARCHAR NOT NULL DEFAULT ''"
+        ),
+        "created_at": "ALTER TABLE bookings ADD COLUMN created_at DATETIME",
+        "updated_at": "ALTER TABLE bookings ADD COLUMN updated_at DATETIME",
     }
 
     with engine.begin() as connection:
@@ -34,9 +40,37 @@ def ensure_booking_columns():
 
 ensure_booking_columns()
 
+
+def ensure_time_slot_columns():
+    existing_columns = {
+        column["name"]
+        for column in inspect(engine).get_columns("time_slots")
+    }
+    required_columns = {
+        "slot_time": (
+            "ALTER TABLE time_slots ADD COLUMN slot_time "
+            "VARCHAR NOT NULL DEFAULT ''"
+        ),
+        "booking_id": "ALTER TABLE time_slots ADD COLUMN booking_id INTEGER",
+    }
+
+    with engine.begin() as connection:
+        for column_name, statement in required_columns.items():
+            if column_name not in existing_columns:
+                connection.execute(text(statement))
+
+        connection.execute(text(
+            "UPDATE time_slots SET slot_time = slot "
+            "WHERE slot_time IS NULL OR slot_time = ''"
+        ))
+
+
+ensure_time_slot_columns()
+
 db = SessionLocal()
 try:
     crud.seed_default_data(db)
+    crud.sync_slot_booking_state(db)
 finally:
     db.close()
 
@@ -61,13 +95,12 @@ app.include_router(admin.router)
 # Home route
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
+    from datetime import date as date_type
     db = SessionLocal()
+    today_date = date_type.today().isoformat()
     services = crud.get_services(db)
-    time_slots = [
-        time_slot
-        for time_slot in crud.get_time_slots(db)
-        if time_slot.is_available == "Yes"
-    ]
+    time_slots = crud.get_slot_cards(db, target_date=today_date)
+    stats = crud.get_dashboard_stats(db)
     db.close()
 
     return templates.TemplateResponse(
@@ -76,6 +109,8 @@ def home(request: Request):
         {
             "request": request,
             "services": services,
-            "time_slots": time_slots
+            "time_slots": time_slots,
+            "stats": stats,
+            "today_date": today_date
         }
     )

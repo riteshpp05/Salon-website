@@ -38,7 +38,9 @@ def create_booking(
             booking.phone,
             booking.customer_name,
             booking.service,
-            booking.time_slot
+            booking.time_slot,
+            new_booking.appointment_date,
+            new_booking.price
         )
     except Exception as error:
         whatsapp_error = str(error)

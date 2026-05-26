@@ -19,7 +19,8 @@ class ServiceResponse(ServiceCreate):
 
 
 class TimeSlotCreate(BaseModel):
-    slot: str
+    slot: str | None = None
+    slot_time: str | None = None
     is_available: str = "Yes"
 
 
@@ -50,6 +51,7 @@ class BookingUpdate(BaseModel):
 class BookingResponse(BookingCreate):
     id: int
     price: str
+    service_duration: str
     status: str
 
     class Config:

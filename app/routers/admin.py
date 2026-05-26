@@ -25,6 +25,8 @@ def admin_dashboard(
     bookings = crud.get_bookings(db)
     services = crud.get_services(db)
     time_slots = crud.get_time_slots(db)
+    slot_cards = crud.get_slot_cards(db)
+    stats = crud.get_dashboard_stats(db)
 
     return templates.TemplateResponse(
         request,
@@ -33,6 +35,8 @@ def admin_dashboard(
             "request": request,
             "bookings": bookings,
             "services": services,
-            "time_slots": time_slots
+            "time_slots": time_slots,
+            "slot_cards": slot_cards,
+            "stats": stats
         }
     )
