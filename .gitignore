@@ -35,5 +35,5 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# WhatsApp session
+# WhatsApp Session
 whatsapp_session/

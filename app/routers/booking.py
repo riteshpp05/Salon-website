@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app import crud, schemas
 from app.database import SessionLocal
-from app.whatsapp import send_whatsapp_selenium, format_booking_message, format_customer_booking_message
+from app.whatsapp import send_whatsapp_selenium, format_booking_message
 
 router = APIRouter()
 logger = logging.getLogger("salon.booking")
@@ -60,25 +60,19 @@ async def create_booking(
         raise HTTPException(status_code=400, detail=str(error))
 
     # Send WhatsApp to Admin via Selenium in a background task
-    admin_number = "+917028111146"
-    admin_message_text = format_booking_message(new_booking)
+    admin_number = os.getenv("ADMIN_WHATSAPP_NUMBER", "+917028111146")
+    message_text = format_booking_message(new_booking)
 
-    logger.info("Queuing Selenium WhatsApp notification for admin...")
-    background_tasks.add_task(trigger_selenium_whatsapp, admin_number, admin_message_text)
-
-    # Send WhatsApp to Customer via Selenium in a background task
-    if new_booking.phone:
-        customer_message_text = format_customer_booking_message(new_booking)
-        logger.info("Queuing Selenium WhatsApp notification for customer...")
-        background_tasks.add_task(trigger_selenium_whatsapp, new_booking.phone, customer_message_text)
+    logger.info("Queuing Selenium WhatsApp notification...")
+    background_tasks.add_task(trigger_selenium_whatsapp, admin_number, message_text)
 
     # Build response
     response = {
         "message": "Booking Confirmed",
         "data": new_booking,
-        "whatsapp_sent": True, # Sent to customer
-        "admin_whatsapp_sent": True, # Sent to admin
-        "whatsapp_error": None,
+        "whatsapp_sent": False, # We only send to admin now
+        "admin_whatsapp_sent": True, # Assume queued successfully
+        "whatsapp_error": "Disabled for customer to avoid spam bans",
         "admin_whatsapp_error": None,
     }
 
