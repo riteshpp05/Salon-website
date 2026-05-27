@@ -29,6 +29,7 @@ class Booking(Base):
     id = Column(Integer, primary_key=True, index=True)
     customer_name = Column(String, nullable=False)
     phone = Column(String, nullable=False)
+    whatsapp_number = Column(String, nullable=True, default="")
     age = Column(String, nullable=False, default="")
     service = Column(String, nullable=False)
     price = Column(String, nullable=False, default="")

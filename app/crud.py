@@ -213,6 +213,7 @@ def create_booking(
     appointment_date = booking.appointment_date or date.today().isoformat()
     booking_data["appointment_date"] = appointment_date
     booking_data["age"] = booking.age or "Not provided"
+    booking_data["whatsapp_number"] = booking.phone
 
     service = db.query(models.Service)\
         .filter(models.Service.name == booking.service)\

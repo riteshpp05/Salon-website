@@ -1,3 +1,6 @@
+import logging
+import sys
+
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -9,8 +12,46 @@ from app.database import SessionLocal
 from app import crud
 from app.routers import booking, service, admin
 
+
+# --------------- Logging Setup --------------- #
+
+def setup_logging():
+    """Configure structured logging for the salon app."""
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+
+    # Console handler with detailed format
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        "%(asctime)s | %(levelname)-8s | %(name)-20s | %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    console_handler.setFormatter(formatter)
+
+    # Only add if not already configured
+    if not root_logger.handlers:
+        root_logger.addHandler(console_handler)
+
+    # Set salon loggers to DEBUG for verbose output
+    for logger_name in ["salon.whatsapp", "salon.booking", "salon"]:
+        logger = logging.getLogger(logger_name)
+        logger.setLevel(logging.DEBUG)
+        if not logger.handlers:
+            logger.addHandler(console_handler)
+
+    logging.getLogger("salon").info("[OK] Salon logging initialized")
+
+
+setup_logging()
+logger = logging.getLogger("salon")
+
+
+# --------------- Database Setup --------------- #
+
 # Create database tables
 Base.metadata.create_all(bind=engine)
+
 
 def ensure_booking_columns():
     existing_columns = {
@@ -30,11 +71,16 @@ def ensure_booking_columns():
         ),
         "created_at": "ALTER TABLE bookings ADD COLUMN created_at DATETIME",
         "updated_at": "ALTER TABLE bookings ADD COLUMN updated_at DATETIME",
+        "whatsapp_number": (
+            "ALTER TABLE bookings ADD COLUMN whatsapp_number "
+            "VARCHAR DEFAULT ''"
+        ),
     }
 
     with engine.begin() as connection:
         for column_name, statement in required_columns.items():
             if column_name not in existing_columns:
+                logger.info("Adding column '%s' to bookings table", column_name)
                 connection.execute(text(statement))
 
 
@@ -57,6 +103,7 @@ def ensure_time_slot_columns():
     with engine.begin() as connection:
         for column_name, statement in required_columns.items():
             if column_name not in existing_columns:
+                logger.info("Adding column '%s' to time_slots table", column_name)
                 connection.execute(text(statement))
 
         connection.execute(text(
@@ -81,7 +128,7 @@ app = FastAPI(title="Salon Booking App")
 app.mount(
     "/static",
     StaticFiles(directory="app/static"),
-    name="static"
+    name="static",
 )
 
 # Templates
@@ -92,10 +139,12 @@ app.include_router(booking.router)
 app.include_router(service.router)
 app.include_router(admin.router)
 
+
 # Home route
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     from datetime import date as date_type
+
     db = SessionLocal()
     today_date = date_type.today().isoformat()
     services = crud.get_services(db)
@@ -111,6 +160,14 @@ def home(request: Request):
             "services": services,
             "time_slots": time_slots,
             "stats": stats,
-            "today_date": today_date
-        }
+            "today_date": today_date,
+        },
     )
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Verify WhatsApp configuration on startup."""
+    logger.info("=" * 60)
+    logger.info("Salon Booking App starting up (with Selenium WhatsApp)...")
+    logger.info("=" * 60)

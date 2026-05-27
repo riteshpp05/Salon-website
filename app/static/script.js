@@ -421,3 +421,5 @@ if (bookingSearch) {
 if (bookingStatusFilter) {
     bookingStatusFilter.addEventListener("change", filterBookings);
 }
+
+

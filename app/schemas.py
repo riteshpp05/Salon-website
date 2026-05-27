@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+import re
+
+from pydantic import BaseModel, field_validator
 
 
 class ServiceCreate(BaseModel):
@@ -42,6 +44,36 @@ class BookingCreate(BaseModel):
     service: str
     appointment_date: str = ""
     time_slot: str
+
+    @field_validator("phone")
+    @classmethod
+    def validate_phone(cls, v: str) -> str:
+        """Validate and normalize the phone number."""
+        cleaned = re.sub(r"[\s\-\(\)]+", "", v.strip())
+
+        if not cleaned:
+            raise ValueError("Phone number is required")
+
+        # Remove whatsapp: prefix for validation
+        digits_only = cleaned.replace("whatsapp:", "").lstrip("+")
+
+        if not digits_only.isdigit():
+            raise ValueError(
+                f"Phone number contains invalid characters: '{v}'"
+            )
+
+        if len(digits_only) < 10:
+            raise ValueError(
+                f"Phone number too short ({len(digits_only)} digits). "
+                "Please include country code (e.g. +917028111146)"
+            )
+
+        if len(digits_only) > 15:
+            raise ValueError(
+                f"Phone number too long ({len(digits_only)} digits)"
+            )
+
+        return cleaned
 
 
 class BookingUpdate(BaseModel):
