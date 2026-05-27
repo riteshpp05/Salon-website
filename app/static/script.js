@@ -262,6 +262,29 @@ if (bookingForm) {
             }
 
             showToast("Booking confirmed successfully", "success");
+
+            // Client-side WhatsApp redirect
+            const targetPhone = "917028111146"; // Admin number
+            const waMessage = `Booking Confirmation:\nName: ${data.customer_name}\nPhone: ${data.phone}\nService: ${data.service}\nDate: ${data.appointment_date}\nTime: ${data.time_slot}`;
+            const encodedText = encodeURIComponent(waMessage);
+            
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isAndroid = /android/i.test(userAgent);
+            const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+            
+            let waUrl = "";
+            if (isAndroid) {
+                waUrl = `intent://send/+${targetPhone}?text=${encodedText}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
+            } else if (isIOS) {
+                waUrl = `whatsapp://send?phone=${targetPhone}&text=${encodedText}`;
+            } else {
+                // Desktop
+                waUrl = `https://wa.me/${targetPhone}?text=${encodedText}`;
+            }
+            
+            // Open WhatsApp in a new tab/window
+            window.open(waUrl, "_blank");
+
             bookingForm.reset();
 
             // Refresh slots for today after booking
