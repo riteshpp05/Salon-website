@@ -30,6 +30,20 @@ Customer Number: {booking_data.phone}
 
 Booking Confirmed Successfully."""
 
+def format_customer_booking_message(booking_data):
+    """
+    Formats the booking confirmation message for the customer.
+    """
+    return f"""Hello {booking_data.customer_name},
+
+Your salon booking is confirmed!
+
+Service: {booking_data.service}
+Date: {booking_data.appointment_date}
+Time Slot: {booking_data.time_slot}
+
+Thank you for choosing us!"""
+
 def send_whatsapp_selenium(phone_number, message_text):
     """
     Sends a WhatsApp message using Selenium automation.
