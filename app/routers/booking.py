@@ -2,10 +2,11 @@ import asyncio
 import logging
 import os
 
-from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks, Request
 from sqlalchemy.orm import Session
 
 from app import crud, schemas
+from app.auth import require_admin_api
 from app.database import SessionLocal
 from app.whatsapp import send_whatsapp_selenium, format_booking_message
 
@@ -15,7 +16,6 @@ logger = logging.getLogger("salon.booking")
 
 def get_db():
     db = SessionLocal()
-
     try:
         yield db
     finally:
@@ -30,6 +30,8 @@ def trigger_selenium_whatsapp(admin_number: str, message_text: str):
     except Exception as error:
         logger.error("[FAIL] Background Selenium task failed: %s", error, exc_info=True)
 
+
+# ── Public: Create Booking ────────────────────────────────────────────────────
 
 @router.post("/api/bookings")
 async def create_booking(
@@ -47,7 +49,6 @@ async def create_booking(
         booking.time_slot,
     )
 
-    # Create the booking in the database
     try:
         new_booking = crud.create_booking(db, booking)
         logger.info(
@@ -59,91 +60,71 @@ async def create_booking(
         logger.warning("Booking creation failed: %s", error)
         raise HTTPException(status_code=400, detail=str(error))
 
-    # Send WhatsApp to Admin via Selenium in a background task
+    # Send WhatsApp to admin via Selenium (background — does not block response)
     admin_number = os.getenv("ADMIN_WHATSAPP_NUMBER", "+917028111146")
     message_text = format_booking_message(new_booking)
-
     logger.info("Queuing Selenium WhatsApp notification...")
     background_tasks.add_task(trigger_selenium_whatsapp, admin_number, message_text)
 
-    # Build response
-    response = {
+    return {
         "message": "Booking Confirmed",
         "data": new_booking,
-        "whatsapp_sent": False, # We only send to admin now
-        "admin_whatsapp_sent": True, # Assume queued successfully
-        "whatsapp_error": "Disabled for customer to avoid spam bans",
+        "whatsapp_sent": False,
+        "admin_whatsapp_sent": True,
+        "whatsapp_error": "Customer WhatsApp disabled to avoid spam bans",
         "admin_whatsapp_error": None,
     }
 
-    logger.info("=== BOOKING COMPLETE (Selenium running in background) ===")
 
-    return response
-
-
-@router.post("/book")
-async def create_booking_old_url(
-    booking: schemas.BookingCreate,
-    db: Session = Depends(get_db),
-):
-
-    return await create_booking(booking, db)
-
+# ── Public: Read Bookings ─────────────────────────────────────────────────────
 
 @router.get("/api/bookings")
 def get_all_bookings(
     db: Session = Depends(get_db),
 ):
-
     return crud.get_bookings(db)
 
 
-@router.get("/bookings")
-def get_all_bookings_old_url(
-    db: Session = Depends(get_db),
-):
-
-    return get_all_bookings(db)
-
+# ── Admin Only: Update Booking Status ─────────────────────────────────────────
 
 @router.patch("/api/bookings/{booking_id}/status")
 def update_booking(
     booking_id: int,
     booking: schemas.BookingUpdate,
     db: Session = Depends(get_db),
+    _: None = Depends(require_admin_api),
 ):
-
-    updated_booking = crud.update_booking_status(
-        db,
-        booking_id,
-        booking.status,
-    )
-
+    updated_booking = crud.update_booking_status(db, booking_id, booking.status)
     if not updated_booking:
         raise HTTPException(status_code=404, detail="Booking not found")
-
     return updated_booking
 
 
-@router.put("/bookings/{booking_id}")
-def update_booking_old_url(
-    booking_id: int,
-    booking: schemas.BookingUpdate,
-    db: Session = Depends(get_db),
-):
-
-    return update_booking(booking_id, booking, db)
-
+# ── Admin Only: Delete Booking ────────────────────────────────────────────────
 
 @router.delete("/api/bookings/{booking_id}")
 def remove_booking(
     booking_id: int,
     db: Session = Depends(get_db),
+    _: None = Depends(require_admin_api),
 ):
-
     deleted_booking = crud.delete_booking(db, booking_id)
-
     if not deleted_booking:
         raise HTTPException(status_code=404, detail="Booking not found")
-
     return {"message": "Booking deleted"}
+
+
+# ── Legacy URL compatibility ──────────────────────────────────────────────────
+
+@router.post("/book")
+async def create_booking_old_url(
+    booking: schemas.BookingCreate,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    return await create_booking(booking, background_tasks, db)
+
+
+@router.get("/bookings")
+def get_all_bookings_old_url(db: Session = Depends(get_db)):
+    return get_all_bookings(db)

@@ -9,6 +9,7 @@ async function sendJson(url, method, data) {
     const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify(data)
     });
 
@@ -504,3 +505,328 @@ function setupSidebar(openBtnId, closeBtnId, sidebarId, overlayId, direction) {
 }
 
 setupSidebar("adminMenuBtn", "closeAdminSidebar", "adminSidebar", "adminOverlay", "left");
+
+// =============================================
+// ADMIN TABS (Phase 3 Integration)
+// =============================================
+
+function switchAdminTab() {
+    const hash = window.location.hash || "#overview";
+    
+    // Update nav links
+    document.querySelectorAll(".admin-nav, .admin-sidebar-link").forEach(link => {
+        link.classList.toggle("active", link.getAttribute("href") === hash);
+    });
+
+    // Show/hide sections
+    document.querySelectorAll(".admin-section").forEach(sec => {
+        sec.classList.remove("block");
+        sec.classList.add("hidden");
+    });
+
+    const target = document.querySelector(hash);
+    if (target) {
+        target.classList.remove("hidden");
+        target.classList.add("block");
+        
+        // Load data based on tab
+        if (hash === "#stylists") loadStylistsAdmin();
+        if (hash === "#gallery") loadGalleryAdmin();
+        if (hash === "#analytics") loadAnalytics();
+    }
+}
+
+window.addEventListener("hashchange", switchAdminTab);
+if (window.location.pathname.startsWith("/admin/dashboard")) {
+    window.addEventListener("DOMContentLoaded", switchAdminTab);
+}
+
+// =============================================
+// STYLISTS MANAGEMENT (Phase 2)
+// =============================================
+
+async function loadStylistsAdmin() {
+    const grid = document.getElementById("stylistGrid");
+    if (!grid) return;
+    try {
+        const stylists = await fetch("/api/stylists/all", { credentials: "same-origin" }).then(r => r.json());
+        grid.innerHTML = "";
+        stylists.forEach(s => {
+            const el = document.createElement("div");
+            el.className = "rounded border border-[#E5E0D8] bg-white p-5 flex flex-col items-center text-center";
+            el.innerHTML = `
+                <div class="w-16 h-16 rounded-full bg-[#ECE8E2] overflow-hidden mb-3 border border-[#D7BC96]">
+                    ${s.profile_image ? `<img src="/static/stylists/${s.profile_image}" class="w-full h-full object-cover">` : ''}
+                </div>
+                <h3 class="font-bold">${s.full_name}</h3>
+                <p class="text-xs text-[#888]">${s.role}</p>
+                <div class="mt-3 text-xs w-full text-left bg-[#F7F5F1] p-2 rounded">
+                    <div>Exp: ${s.experience_years} yrs</div>
+                    <div class="mt-1 ${s.is_active ? 'text-green-600' : 'text-red-500'} font-bold">
+                        ${s.is_active ? 'Active' : 'Inactive'}
+                    </div>
+                </div>
+                <div class="mt-4 flex gap-2 w-full">
+                    <button class="small flex-1 toggle-stylist bg-[#E5E0D8]" data-id="${s.id}">${s.is_active ? 'Deactivate' : 'Activate'}</button>
+                    <button class="small danger flex-1 delete-stylist" data-id="${s.id}">Delete</button>
+                </div>
+            `;
+            grid.appendChild(el);
+        });
+        
+        // Attach Stylist Handlers
+        grid.querySelectorAll(".toggle-stylist").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                await fetch(`/api/stylists/${btn.dataset.id}/deactivate`, { method: "PATCH" });
+                loadStylistsAdmin();
+            });
+        });
+        grid.querySelectorAll(".delete-stylist").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                if(confirm("Delete this stylist?")) {
+                    await fetch(`/api/stylists/${btn.dataset.id}`, { method: "DELETE" });
+                    loadStylistsAdmin();
+                }
+            });
+        });
+
+        // Also populate booking assignment dropdowns
+        const activeStylists = stylists.filter(s => s.is_active);
+        document.querySelectorAll(".stylist-assign-select").forEach(select => {
+            if (select.options.length > 1) return; // already populated
+            activeStylists.forEach(s => {
+                const opt = document.createElement("option");
+                opt.value = s.id;
+                opt.textContent = s.full_name;
+                select.appendChild(opt);
+            });
+        });
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+const stylistForm = document.getElementById("stylistForm");
+if (stylistForm) {
+    stylistForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const data = {
+            full_name: document.getElementById("stylistName").value,
+            role: document.getElementById("stylistRole").value
+        };
+        await sendJson("/api/stylists", "POST", data);
+        stylistForm.reset();
+        loadStylistsAdmin();
+        showToast("Stylist added", "success");
+    });
+}
+
+// Handle Stylist Assignment in Bookings Table
+document.querySelectorAll(".stylist-assign-select").forEach(select => {
+    select.addEventListener("change", async () => {
+        const val = select.value ? parseInt(select.value) : null;
+        try {
+            await sendJson(`/api/bookings/${select.dataset.bookingId}/assign`, "PATCH", { stylist_id: val });
+            showToast("Stylist assigned", "success");
+        } catch (e) {
+            showToast(e.message, "error");
+            select.value = ""; // revert on error
+        }
+    });
+});
+
+// =============================================
+// GALLERY MANAGEMENT (Phase 2)
+// =============================================
+
+async function loadGalleryAdmin() {
+    const grid = document.getElementById("galleryGrid");
+    if (!grid) return;
+    try {
+        const items = await fetch("/api/gallery/admin", { credentials: "same-origin" }).then(r => r.json());
+        grid.innerHTML = "";
+        items.forEach(item => {
+            const el = document.createElement("div");
+            el.className = "rounded border border-[#E5E0D8] bg-white overflow-hidden";
+            el.innerHTML = `
+                <div class="h-32 bg-[#F7F5F1] border-b border-[#E5E0D8] relative flex">
+                    <div class="flex-1 border-r border-[#E5E0D8] bg-center bg-cover ${!item.before_thumb ? 'flex items-center justify-center' : ''}" style="${item.before_thumb ? `background-image:url('${item.before_thumb}')` : ''}">
+                        ${!item.before_thumb ? '<span class="text-xs text-[#aaa]">No Before</span>' : ''}
+                    </div>
+                    <div class="flex-1 bg-center bg-cover ${!item.after_thumb ? 'flex items-center justify-center' : ''}" style="${item.after_thumb ? `background-image:url('${item.after_thumb}')` : ''}">
+                        ${!item.after_thumb ? '<span class="text-xs text-[#aaa]">No After</span>' : ''}
+                    </div>
+                    <span class="absolute top-2 right-2 px-2 py-0.5 text-[0.6rem] font-bold uppercase rounded ${item.is_published ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}">${item.is_published ? 'Published' : 'Draft'}</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-sm">${item.title}</h3>
+                    <p class="text-xs text-[#888] mb-3">${item.service_type}</p>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex gap-2">
+                            <label class="small flex-1 text-center cursor-pointer bg-[#ECE8E2] border border-[#E5E0D8]">
+                                Up Before
+                                <input type="file" class="hidden up-before" data-id="${item.id}" accept="image/*">
+                            </label>
+                            <label class="small flex-1 text-center cursor-pointer bg-[#ECE8E2] border border-[#E5E0D8]">
+                                Up After
+                                <input type="file" class="hidden up-after" data-id="${item.id}" accept="image/*">
+                            </label>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="small flex-1 toggle-publish" data-id="${item.id}">${item.is_published ? 'Unpublish' : 'Publish'}</button>
+                            <button class="small danger flex-1 delete-gallery" data-id="${item.id}">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(el);
+        });
+
+        // Gallery Handlers
+        grid.querySelectorAll(".toggle-publish").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                await fetch(`/api/gallery/${btn.dataset.id}/publish`, { method: "PATCH" });
+                loadGalleryAdmin();
+            });
+        });
+
+        grid.querySelectorAll(".delete-gallery").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                if(confirm("Delete this gallery item?")) {
+                    await fetch(`/api/gallery/${btn.dataset.id}`, { method: "DELETE" });
+                    loadGalleryAdmin();
+                }
+            });
+        });
+
+        const handleUpload = async (e, type) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const id = e.target.dataset.id;
+            const fd = new FormData();
+            fd.append("file", file);
+            try {
+                showToast(`Uploading ${type} image...`, "success");
+                const res = await fetch(`/api/gallery/${id}/${type}-image`, { method: "POST", body: fd });
+                if (!res.ok) throw new Error(await res.text());
+                loadGalleryAdmin();
+                showToast("Upload complete", "success");
+            } catch (err) {
+                showToast("Upload failed", "error");
+            }
+        };
+
+        grid.querySelectorAll(".up-before").forEach(inp => inp.addEventListener("change", e => handleUpload(e, "before")));
+        grid.querySelectorAll(".up-after").forEach(inp => inp.addEventListener("change", e => handleUpload(e, "after")));
+
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+const galleryForm = document.getElementById("galleryForm");
+if (galleryForm) {
+    galleryForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const data = {
+            title: document.getElementById("galleryTitle").value,
+            service_type: document.getElementById("galleryService").value,
+            description: "", display_order: 0
+        };
+        await sendJson("/api/gallery", "POST", data);
+        galleryForm.reset();
+        loadGalleryAdmin();
+        showToast("Gallery item created", "success");
+    });
+}
+
+// =============================================
+// ANALYTICS & CHARTS (Phase 3)
+// =============================================
+
+let revChartInstance = null;
+let svcChartInstance = null;
+
+async function loadAnalytics() {
+    try {
+        // Load Business Insights
+        const insightsData = await fetch("/api/analytics/insights", { credentials: "same-origin" }).then(r => r.json());
+        const insightsList = document.getElementById("businessInsightsList");
+        if (insightsList && insightsData.insights) {
+            insightsList.innerHTML = insightsData.insights.map(i => `<li>${i}</li>`).join("");
+        }
+
+        // Load Overview Cards
+        const overview = await fetch("/api/analytics/overview", { credentials: "same-origin" }).then(r => r.json());
+        if (document.getElementById("mrrValue")) document.getElementById("mrrValue").textContent = `Rs. ${overview.monthly_revenue}`;
+        if (document.getElementById("growthValue")) {
+            const g = overview.revenue_growth;
+            const el = document.getElementById("growthValue");
+            el.textContent = `${g > 0 ? '+' : ''}${g}%`;
+            el.style.color = g >= 0 ? '#2E7D32' : '#C62828';
+        }
+        if (document.getElementById("abvValue")) document.getElementById("abvValue").textContent = `Rs. ${overview.average_booking_value}`;
+        if (document.getElementById("repeatRateValue")) document.getElementById("repeatRateValue").textContent = `${overview.repeat_rate}%`;
+
+        // Load Charts
+        const charts = await fetch("/api/analytics/charts", { credentials: "same-origin" }).then(r => r.json());
+        
+        // Destroy old instances
+        if (revChartInstance) revChartInstance.destroy();
+        if (svcChartInstance) svcChartInstance.destroy();
+
+        const revCtx = document.getElementById('revenueChart');
+        if (revCtx) {
+            revChartInstance = new Chart(revCtx, {
+                type: 'line',
+                data: {
+                    labels: charts.revenue_trend.labels.map(d => d.substring(5)), // MM-DD
+                    datasets: [{
+                        label: 'Daily Revenue (Rs)',
+                        data: charts.revenue_trend.data,
+                        borderColor: '#B89A6E',
+                        backgroundColor: 'rgba(184, 154, 110, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { 
+                        y: { beginAtZero: true, grid: { color: '#E5E0D8' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        const svcCtx = document.getElementById('serviceChart');
+        if (svcCtx) {
+            svcChartInstance = new Chart(svcCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: charts.service_popularity.labels,
+                    datasets: [{
+                        data: charts.service_popularity.data,
+                        backgroundColor: ['#D7BC96', '#222222', '#B89A6E', '#E5E0D8', '#888888'],
+                        borderWidth: 1,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right', labels: { boxWidth: 12, font: { size: 11 } } } },
+                    cutout: '65%'
+                }
+            });
+        }
+
+    } catch (e) {
+        console.error("Failed to load analytics:", e);
+    }
+}
+

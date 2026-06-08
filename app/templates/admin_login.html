@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login — Ritesh Luxe Salon</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F7F5F1;
+            --card: #FFFFFF;
+            --accent: #D7BC96;
+            --accent-dark: #B89A6E;
+            --text: #222222;
+            --text-mid: #555555;
+            --text-light: #888888;
+            --border: #E5E0D8;
+            --error-bg: #FDF2F2;
+            --error-border: #E8B4B4;
+            --error-text: #8B2E2E;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html { font-size: 16px; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ── Left decorative panel ─────────────────────────────── */
+        .login-left {
+            position: relative;
+            overflow: hidden;
+            background: #1E1E1C;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 3.5rem;
+        }
+
+        .login-left-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.35;
+        }
+
+        .login-left-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-left-eyebrow {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .login-left-eyebrow::before {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .login-left-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 3vw, 3rem);
+            font-weight: 700;
+            color: #F0EDE8;
+            line-height: 1.15;
+            margin-bottom: 1.25rem;
+        }
+
+        .login-left-sub {
+            font-size: 0.88rem;
+            color: rgba(240, 237, 232, 0.55);
+            line-height: 1.7;
+            max-width: 340px;
+        }
+
+        .login-left-divider {
+            width: 40px;
+            height: 1px;
+            background: var(--accent);
+            margin: 2rem 0;
+        }
+
+        .login-left-meta {
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(240, 237, 232, 0.4);
+            font-weight: 500;
+        }
+
+        /* ── Right login form ─────────────────────────────────── */
+        .login-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 2rem;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-logo {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .login-logo-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text);
+            display: block;
+        }
+
+        .login-logo-tag {
+            font-size: 0.6rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--accent-dark);
+            font-weight: 600;
+            display: block;
+            margin-top: 0.2rem;
+        }
+
+        .login-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.35rem;
+            text-align: center;
+        }
+
+        .login-sub {
+            font-size: 0.83rem;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 2.25rem;
+        }
+
+        /* Error banner */
+        .login-error {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.9rem 1rem;
+            background: var(--error-bg);
+            border: 1px solid var(--error-border);
+            border-radius: 2px;
+            color: var(--error-text);
+            font-size: 0.83rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .login-error-icon {
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            margin-top: 1px;
+        }
+
+        /* Form fields */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+
+        .login-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .login-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-mid);
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 0.9rem 1.1rem;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            border-radius: 2px;
+            outline: none;
+            transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .login-input:focus {
+            border-color: var(--accent-dark);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(184, 154, 110, 0.1);
+        }
+
+        .login-input.error {
+            border-color: var(--error-border);
+        }
+
+        .login-input::placeholder {
+            color: #bbb;
+        }
+
+        /* Password field with eye toggle */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper .login-input {
+            padding-right: 3rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 0;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s ease;
+        }
+
+        .password-toggle:hover { color: var(--text); }
+        .password-toggle svg { width: 16px; height: 16px; }
+
+        /* Submit button */
+        .login-submit {
+            margin-top: 0.5rem;
+            width: 100%;
+            padding: 1rem;
+            background: var(--text);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.25s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .login-submit:hover {
+            background: var(--accent-dark);
+            transform: translateY(-1px);
+        }
+
+        .login-submit svg { width: 14px; height: 14px; }
+
+        /* Back link */
+        .login-back {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .login-back a {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            transition: color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .login-back a:hover { color: var(--text); }
+        .login-back svg { width: 13px; height: 13px; }
+
+        /* Divider */
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .login-divider span {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+
+        /* Security badge */
+        .login-security {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-light);
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .login-security svg {
+            width: 13px;
+            height: 13px;
+            color: var(--accent-dark);
+        }
+
+        /* Mobile: single column */
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+            }
+
+            .login-left {
+                display: none;
+            }
+
+            .login-right {
+                padding: 2.5rem 1.5rem;
+                justify-content: flex-start;
+                padding-top: 4rem;
+            }
+
+            .login-box {
+                max-width: 100%;
+            }
+        }
+
+        /* Shake animation for wrong password */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            15% { transform: translateX(-6px); }
+            45% { transform: translateX(6px); }
+            75% { transform: translateX(-4px); }
+        }
+
+        .shake {
+            animation: shake 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left decorative side -->
+    <div class="login-left">
+        <div class="login-left-bg"></div>
+        <div class="login-left-content">
+            <p class="login-left-eyebrow">Admin Portal</p>
+            <h2 class="login-left-title">
+                Ritesh Luxe<br>Salon Studio
+            </h2>
+            <p class="login-left-sub">
+                Secure dashboard for managing bookings, services, time slots, and salon operations.
+            </p>
+            <div class="login-left-divider"></div>
+            <p class="login-left-meta">Kothrud, Pune · Maharashtra, India</p>
+        </div>
+    </div>
+
+    <!-- Right login form -->
+    <div class="login-right">
+        <div class="login-box">
+
+            <div class="login-logo">
+                <span class="login-logo-name">Ritesh Luxe Salon</span>
+                <span class="login-logo-tag">Admin Dashboard</span>
+            </div>
+
+            <h1 class="login-heading">Welcome Back</h1>
+            <p class="login-sub">Sign in to access the admin panel.</p>
+
+            {% if error %}
+            <div class="login-error" id="errorBanner" role="alert">
+                <svg class="login-error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form class="login-form {% if error %}shake{% endif %}" id="loginForm" method="POST" action="/admin/login" novalidate>
+
+                <div class="login-field">
+                    <label class="login-label" for="username">Username</label>
+                    <input
+                        class="login-input {% if error %}error{% endif %}"
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        required
+                        autofocus
+                    >
+                </div>
+
+                <div class="login-field">
+                    <label class="login-label" for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input
+                            class="login-input {% if error %}error{% endif %}"
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="togglePassword"
+                            aria-label="Show/hide password"
+                        >
+                            <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button class="login-submit" type="submit" id="loginBtn">
+                    <span id="loginBtnText">Sign In</span>
+                    <svg id="loginBtnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                    </svg>
+                </button>
+
+            </form>
+
+            <div class="login-back">
+                <a href="/">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M19 12H5"/><path d="m12 5-7 7 7 7"/>
+                    </svg>
+                    Back to main website
+                </a>
+            </div>
+
+            <div class="login-security">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                Secured admin access · Session expires in 1 hour
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Password toggle
+        const toggleBtn = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        const eyeOpen = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+        const eyeClosed = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                eyeIcon.innerHTML = isPassword ? eyeClosed : eyeOpen;
+            });
+        }
+
+        // Loading state on submit
+        const form = document.getElementById('loginForm');
+        const btn = document.getElementById('loginBtn');
+        const btnText = document.getElementById('loginBtnText');
+        const btnIcon = document.getElementById('loginBtnIcon');
+
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                if (!username || !password) {
+                    e.preventDefault();
+                    return;
+                }
+
+                btn.disabled = true;
+                btnText.textContent = 'Signing in...';
+                btnIcon.innerHTML = `<path d="M21 12a9 9 0 1 1-6.219-8.56"/>`;
+                btnIcon.style.animation = 'spin 1s linear infinite';
+            });
+        }
+    </script>
+    <style>
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
+</body>
+</html>

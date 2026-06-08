@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account — Ritesh Luxe Salon</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F7F5F1; --card: #FFFFFF; --accent: #D7BC96;
+            --accent-dark: #B89A6E; --text: #222222; --text-mid: #555555;
+            --text-light: #888888; --border: #E5E0D8;
+            --error-bg: #FDF2F2; --error-border: #E8B4B4; --error-text: #8B2E2E;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; -webkit-font-smoothing: antialiased; }
+        .login-left { position: relative; overflow: hidden; background: #1E1E1C; display: flex; flex-direction: column; justify-content: flex-end; padding: 3.5rem; }
+        .login-left-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80'); background-size: cover; background-position: center; opacity: 0.35; }
+        .login-left-content { position: relative; z-index: 1; }
+        .eyebrow { font-size: .65rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: .75rem; }
+        .eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent); }
+        .login-left h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3vw, 3rem); font-weight: 700; color: #F0EDE8; line-height: 1.15; margin-bottom: 1.25rem; }
+        .login-left p { font-size: .88rem; color: rgba(240,237,232,.55); line-height: 1.7; max-width: 340px; }
+        .divider-line { width: 40px; height: 1px; background: var(--accent); margin: 2rem 0; }
+        .login-left-meta { font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: rgba(240,237,232,.4); font-weight: 500; }
+        .login-right { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 3rem 2rem; }
+        .login-box { width: 100%; max-width: 420px; }
+        .login-logo { margin-bottom: 2.5rem; text-align: center; }
+        .login-logo-name { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--text); display: block; }
+        .login-logo-tag { font-size: .6rem; letter-spacing: .28em; text-transform: uppercase; color: var(--accent-dark); font-weight: 600; display: block; margin-top: .2rem; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 700; margin-bottom: .35rem; text-align: center; }
+        .sub { font-size: .83rem; color: var(--text-light); text-align: center; margin-bottom: 2rem; }
+        .error-banner { display: flex; align-items: flex-start; gap: .75rem; padding: .9rem 1rem; background: var(--error-bg); border: 1px solid var(--error-border); border-radius: 2px; color: var(--error-text); font-size: .83rem; font-weight: 500; margin-bottom: 1.5rem; line-height: 1.5; }
+        .form { display: flex; flex-direction: column; gap: 1.1rem; }
+        .field { display: flex; flex-direction: column; gap: .45rem; }
+        label { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--text-mid); }
+        input { width: 100%; padding: .9rem 1.1rem; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: .92rem; border-radius: 2px; outline: none; transition: border-color .2s, background .2s, box-shadow .2s; }
+        input:focus { border-color: var(--accent-dark); background: #fff; box-shadow: 0 0 0 3px rgba(184,154,110,.1); }
+        .hint { font-size: .72rem; color: var(--text-light); margin-top: .2rem; }
+        .submit-btn { margin-top: .5rem; width: 100%; padding: 1rem; background: var(--text); color: #fff; font-family: 'Inter', sans-serif; font-size: .82rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; border: none; border-radius: 2px; cursor: pointer; transition: background .25s, transform .2s; }
+        .submit-btn:hover { background: var(--accent-dark); transform: translateY(-1px); }
+        .back { margin-top: 1.5rem; text-align: center; }
+        .back a { font-size: .78rem; color: var(--text-light); transition: color .2s; display: inline-flex; align-items: center; gap: .4rem; text-decoration: none; }
+        .back a:hover { color: var(--text); }
+        .security { display: flex; align-items: center; justify-content: center; gap: .5rem; font-size: .7rem; color: var(--text-light); margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+        @media (max-width: 768px) { body { grid-template-columns: 1fr; } .login-left { display: none; } .login-right { padding: 2.5rem 1.5rem; } }
+    </style>
+</head>
+<body>
+    <div class="login-left">
+        <div class="login-left-bg"></div>
+        <div class="login-left-content">
+            <p class="eyebrow">Customer Portal</p>
+            <h2>Your Salon<br>Experience</h2>
+            <p>View your appointments, track loyalty points, and manage your preferences — all in one place.</p>
+            <div class="divider-line"></div>
+            <p class="login-left-meta">Kothrud, Pune · Maharashtra, India</p>
+        </div>
+    </div>
+
+    <div class="login-right">
+        <div class="login-box">
+            <div class="login-logo">
+                <span class="login-logo-name">Ritesh Luxe Salon</span>
+                <span class="login-logo-tag">Customer Portal</span>
+            </div>
+            <h1>Welcome</h1>
+            <p class="sub">Enter your phone number to access your account.</p>
+
+            <div id="errorBanner" class="error-banner" style="display:none;"></div>
+
+            <form class="form" id="loginForm" novalidate>
+                <div class="field">
+                    <label for="fullName">Your Name</label>
+                    <input type="text" id="fullName" name="full_name" placeholder="e.g. Priya Sharma" autocomplete="name">
+                    <p class="hint">Required only for first-time visitors.</p>
+                </div>
+                <div class="field">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+917028111146" autocomplete="tel" required>
+                    <p class="hint">Your booking phone number — no password needed.</p>
+                </div>
+                <button class="submit-btn" type="submit" id="loginBtn">
+                    Continue →
+                </button>
+            </form>
+
+            <div class="back">
+                <a href="/">
+                    ← Back to salon website
+                </a>
+            </div>
+
+            <div class="security">
+                🔒 No password needed · We identify you by your phone number
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const btn = document.getElementById('loginBtn');
+        const errorBanner = document.getElementById('errorBanner');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const phone = document.getElementById('phone').value.trim();
+            const fullName = document.getElementById('fullName').value.trim() || 'Guest';
+
+            if (!phone) {
+                showError('Please enter your phone number.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Signing in...';
+            errorBanner.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/customers/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, full_name: fullName }),
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    window.location.href = data.redirect || '/dashboard';
+                } else {
+                    const err = await res.json();
+                    showError(err.detail || 'Login failed. Please try again.');
+                    btn.disabled = false;
+                    btn.textContent = 'Continue →';
+                }
+            } catch {
+                showError('Connection error. Please try again.');
+                btn.disabled = false;
+                btn.textContent = 'Continue →';
+            }
+        });
+
+        function showError(msg) {
+            errorBanner.textContent = msg;
+            errorBanner.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

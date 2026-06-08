@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard — Ritesh Luxe Salon</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F7F5F1; --card: #FFFFFF; --accent: #D7BC96;
+            --accent-dark: #B89A6E; --text: #222222; --text-mid: #555555;
+            --text-light: #888888; --border: #E5E0D8; --section-bg: #ECE8E2;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+        /* Navbar */
+        .navbar { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--text); text-decoration: none; }
+        .nav-brand span { font-size: .55rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--text-light); display: block; }
+        .nav-links { display: flex; align-items: center; gap: 1.5rem; }
+        .nav-links a { font-size: .8rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-mid); text-decoration: none; transition: color .2s; }
+        .nav-links a:hover { color: var(--text); }
+        .logout-btn { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #c0392b; background: none; border: 1px solid #E8B4B4; border-radius: 2px; padding: .45rem .9rem; cursor: pointer; transition: background .2s; font-family: 'Inter', sans-serif; }
+        .logout-btn:hover { background: #FDF2F2; }
+
+        /* Layout */
+        .dashboard { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+        .welcome-header { margin-bottom: 2.5rem; }
+        .welcome-header .eyebrow { font-size: .65rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: .6rem; }
+        .welcome-header h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; }
+        .welcome-header p { font-size: .88rem; color: var(--text-light); margin-top: .3rem; }
+
+        /* Stats row */
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 1.4rem 1.5rem; }
+        .stat-card .label { font-size: .65rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text-light); margin-bottom: .6rem; }
+        .stat-card .value { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--text); }
+        .stat-card .value.gold { color: var(--accent-dark); }
+        .stat-card .sub { font-size: .72rem; color: var(--text-light); margin-top: .25rem; }
+
+        /* Section */
+        .section { margin-bottom: 2.5rem; }
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; padding-bottom: .75rem; border-bottom: 1px solid var(--border); }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; }
+
+        /* Booking cards */
+        .booking-list { display: flex; flex-direction: column; gap: .75rem; }
+        .booking-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+        .booking-info { flex: 1; }
+        .booking-service { font-weight: 600; font-size: .95rem; margin-bottom: .25rem; }
+        .booking-meta { font-size: .78rem; color: var(--text-light); display: flex; gap: 1rem; flex-wrap: wrap; }
+        .booking-meta span { display: flex; align-items: center; gap: .3rem; }
+        .status-badge { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .3rem .7rem; border-radius: 20px; }
+        .status-badge.confirmed { background: #E8F5E9; color: #2E7D32; }
+        .status-badge.completed { background: #E3F2FD; color: #1565C0; }
+        .status-badge.cancelled { background: #FFEBEE; color: #C62828; }
+        .status-badge.pending { background: #FFF8E1; color: #F57F17; }
+        .cancel-btn { font-size: .72rem; font-weight: 600; color: #c0392b; background: none; border: 1px solid #E8B4B4; border-radius: 2px; padding: .4rem .8rem; cursor: pointer; transition: background .2s; font-family: 'Inter', sans-serif; white-space: nowrap; }
+        .cancel-btn:hover { background: #FDF2F2; }
+        .empty-state { text-align: center; padding: 3rem; color: var(--text-light); font-size: .88rem; background: var(--card); border: 1px solid var(--border); border-radius: 4px; }
+
+        /* Profile section */
+        .profile-form { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 1.75rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-field { display: flex; flex-direction: column; gap: .4rem; }
+        .form-field.full { grid-column: 1 / -1; }
+        .form-label { font-size: .65rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--text-mid); }
+        .form-input, .form-select { width: 100%; padding: .75rem 1rem; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: .88rem; border-radius: 2px; outline: none; transition: border-color .2s; }
+        .form-input:focus, .form-select:focus { border-color: var(--accent-dark); background: #fff; }
+        .save-btn { grid-column: 1 / -1; padding: .85rem; background: var(--text); color: #fff; font-family: 'Inter', sans-serif; font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; border: none; border-radius: 2px; cursor: pointer; transition: background .25s; width: fit-content; }
+        .save-btn:hover { background: var(--accent-dark); }
+
+        .toast { position: fixed; bottom: 2rem; right: 2rem; background: #222; color: #fff; padding: .85rem 1.25rem; border-radius: 4px; font-size: .83rem; transform: translateY(100px); opacity: 0; transition: all .3s ease; z-index: 999; }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem 1.25rem; }
+            .dashboard { padding: 1.5rem 1.25rem; }
+            .profile-form { grid-template-columns: 1fr; }
+            .booking-card { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            Ritesh Luxe Salon
+            <span>Customer Dashboard</span>
+        </a>
+        <div class="nav-links">
+            <a href="/">← Salon Home</a>
+            <a href="/#booking">Book Appointment</a>
+            <button class="logout-btn" id="logoutBtn" onclick="handleLogout()">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+
+        <!-- Welcome -->
+        <div class="welcome-header">
+            <p class="eyebrow">Welcome back</p>
+            <h1>{{ customer.full_name }}</h1>
+            <p>Manage your appointments and track your rewards below.</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <p class="label">Upcoming</p>
+                <p class="value">{{ upcoming | length }}</p>
+                <p class="sub">appointments</p>
+            </div>
+            <div class="stat-card">
+                <p class="label">Visits</p>
+                <p class="value">{{ past | length }}</p>
+                <p class="sub">completed</p>
+            </div>
+            <div class="stat-card">
+                <p class="label">Loyalty Points</p>
+                <p class="value gold">{{ customer.loyalty_points }}</p>
+                <p class="sub">pts earned</p>
+            </div>
+            <div class="stat-card">
+                <p class="label">Phone</p>
+                <p class="value" style="font-size:1rem;padding-top:.5rem;">{{ customer.phone }}</p>
+                <p class="sub">your account</p>
+            </div>
+        </div>
+
+        <!-- Upcoming Appointments -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Upcoming Appointments</h2>
+                <a href="/#booking" style="font-size:.78rem;font-weight:600;color:var(--accent-dark);text-decoration:none;">+ Book New</a>
+            </div>
+            <div class="booking-list">
+                {% if upcoming %}
+                    {% for booking in upcoming %}
+                    <div class="booking-card" id="booking-{{ booking.id }}">
+                        <div class="booking-info">
+                            <p class="booking-service">{{ booking.service }}</p>
+                            <div class="booking-meta">
+                                <span>📅 {{ booking.appointment_date }}</span>
+                                <span>🕐 {{ booking.time_slot }}</span>
+                                {% if booking.stylist_id %}
+                                <span>✂️ Stylist assigned</span>
+                                {% endif %}
+                                <span>💰 ₹{{ booking.price }}</span>
+                            </div>
+                        </div>
+                        <span class="status-badge {{ booking.status | lower }}">{{ booking.status }}</span>
+                        {% if booking.status in ['Confirmed', 'Pending'] %}
+                        <button class="cancel-btn" onclick="cancelBooking({{ booking.id }})">Cancel</button>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">No upcoming appointments. <a href="/#booking" style="color:var(--accent-dark);font-weight:600;">Book one now →</a></div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Past Appointments -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Past Appointments</h2>
+            </div>
+            <div class="booking-list">
+                {% if past %}
+                    {% for booking in past %}
+                    <div class="booking-card">
+                        <div class="booking-info">
+                            <p class="booking-service">{{ booking.service }}</p>
+                            <div class="booking-meta">
+                                <span>📅 {{ booking.appointment_date }}</span>
+                                <span>🕐 {{ booking.time_slot }}</span>
+                                <span>💰 ₹{{ booking.price }}</span>
+                            </div>
+                        </div>
+                        <span class="status-badge {{ booking.status | lower }}">{{ booking.status }}</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">No past appointments yet.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Profile Settings -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">My Profile</h2>
+            </div>
+            <form class="profile-form" id="profileForm" onsubmit="saveProfile(event)">
+                <div class="form-field">
+                    <label class="form-label">Full Name</label>
+                    <input class="form-input" type="text" id="profileName" value="{{ customer.full_name }}" placeholder="Your name">
+                </div>
+                <div class="form-field">
+                    <label class="form-label">Phone</label>
+                    <input class="form-input" type="text" value="{{ customer.phone }}" readonly style="opacity:.6;cursor:not-allowed;">
+                </div>
+                <div class="form-field full">
+                    <label class="form-label">Preferred Stylist</label>
+                    <select class="form-select" id="preferredStylist">
+                        <option value="">No preference — Any stylist</option>
+                        {% for stylist in stylists %}
+                        <option value="{{ stylist.id }}" {% if customer.preferred_stylist_id == stylist.id %}selected{% endif %}>
+                            {{ stylist.full_name }} — {{ stylist.role }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button class="save-btn" type="submit">Save Changes</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        async function cancelBooking(bookingId) {
+            if (!confirm('Are you sure you want to cancel this appointment?')) return;
+            try {
+                const res = await fetch(`/api/customers/me/cancel/${bookingId}`, { method: 'POST' });
+                if (res.ok) {
+                    const card = document.getElementById(`booking-${bookingId}`);
+                    if (card) card.remove();
+                    showToast('Appointment cancelled successfully.');
+                } else {
+                    const err = await res.json();
+                    showToast(err.detail || 'Could not cancel. Please try again.');
+                }
+            } catch { showToast('Connection error.'); }
+        }
+
+        async function saveProfile(e) {
+            e.preventDefault();
+            const name = document.getElementById('profileName').value.trim();
+            const stylistId = document.getElementById('preferredStylist').value;
+            try {
+                const res = await fetch('/api/customers/me', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        full_name: name,
+                        preferred_stylist_id: stylistId ? parseInt(stylistId) : null
+                    }),
+                });
+                if (res.ok) showToast('Profile updated successfully!');
+                else showToast('Failed to update profile.');
+            } catch { showToast('Connection error.'); }
+        }
+
+        async function handleLogout() {
+            await fetch('/api/customers/logout', { method: 'POST' });
+            window.location.href = '/';
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3500);
+        }
+    </script>
+</body>
+</html>
