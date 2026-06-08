@@ -7,42 +7,35 @@
     <meta name="description" content="Admin dashboard for Ritesh Luxe Salon Studio - manage bookings, services, and time slots.">
     <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css?v=5">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=6">
 </head>
-<body class="bg-[#080808] text-white antialiased">
+<body class="bg-[#F7F5F1] text-[#222222] antialiased">
     <!-- Mobile Top Bar -->
-    <header class="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-black/70 px-4 py-3 backdrop-blur-xl lg:hidden">
+    <header class="sticky top-0 z-50 flex items-center justify-between border-b border-[#E5E0D8] bg-[#F7F5F1]/95 px-4 py-3 backdrop-blur-xl lg:hidden">
         <a href="/" class="flex items-center gap-2.5">
-            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#d6b56d]/40 bg-[#d6b56d]/10 text-[#f2d78a]">
-                <i data-lucide="sparkles" class="h-4 w-4"></i>
-            </span>
-            <span class="font-display text-lg font-bold">Ritesh Luxe</span>
+            <span class="font-display text-lg font-bold text-[#222]">Ritesh Luxe</span>
+            <span class="text-xs text-[#888]">Admin</span>
         </a>
-        <button id="adminMenuBtn" type="button" class="grid h-10 w-10 place-items-center rounded-xl border border-white/12 bg-white/8 text-white/80 transition hover:bg-white/14 hover:text-[#f2d78a]" aria-label="Open admin menu">
+        <button id="adminMenuBtn" type="button" class="grid h-10 w-10 place-items-center rounded-lg border border-[#E5E0D8] bg-white text-[#555] transition hover:border-[#D7BC96] hover:text-[#222]" aria-label="Open admin menu">
             <i data-lucide="menu" class="h-5 w-5"></i>
         </button>
     </header>
 
     <!-- Mobile Sidebar Overlay -->
-    <div id="adminOverlay" class="fixed inset-0 z-[60] hidden bg-black/60 backdrop-blur-sm lg:hidden"></div>
+    <div id="adminOverlay" class="fixed inset-0 z-[60] hidden bg-black/30 backdrop-blur-sm lg:hidden"></div>
 
     <!-- Mobile Sidebar Drawer -->
-    <aside id="adminSidebar" class="fixed top-0 left-0 z-[70] flex h-full w-72 -translate-x-full flex-col border-r border-white/10 bg-[#0a0a0a]/97 backdrop-blur-2xl transition-transform duration-300 ease-in-out lg:hidden">
-        <div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
-            <div class="flex items-center gap-2.5">
-                <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#d6b56d]/40 bg-[#d6b56d]/10 text-[#f2d78a]">
-                    <i data-lucide="sparkles" class="h-4 w-4"></i>
-                </span>
-                <div>
-                    <span class="block font-display text-base font-bold">Ritesh Luxe</span>
-                    <span class="block text-[0.65rem] uppercase tracking-[0.28em] text-[#d6b56d]">Admin Suite</span>
-                </div>
+    <aside id="adminSidebar" class="fixed top-0 left-0 z-[70] flex h-full w-72 -translate-x-full flex-col border-r border-[#E5E0D8] bg-[#F7F5F1] transition-transform duration-300 ease-in-out lg:hidden">
+        <div class="flex items-center justify-between border-b border-[#E5E0D8] px-5 py-4">
+            <div>
+                <span class="block font-display text-lg font-bold text-[#222]">Ritesh Luxe</span>
+                <span class="block text-[0.6rem] uppercase tracking-[0.22em] text-[#D7BC96]">Admin Suite</span>
             </div>
-            <button id="closeAdminSidebar" type="button" class="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/6 text-white/60 transition hover:bg-white/12 hover:text-white" aria-label="Close menu">
+            <button id="closeAdminSidebar" type="button" class="grid h-9 w-9 place-items-center rounded-lg border border-[#E5E0D8] bg-white text-[#555] transition hover:text-[#222]" aria-label="Close menu">
                 <i data-lucide="x" class="h-4 w-4"></i>
             </button>
         </div>
@@ -63,7 +56,7 @@
                 <i data-lucide="scissors" class="h-[1.1rem] w-[1.1rem]"></i>
                 Services
             </a>
-            <div class="my-3 border-t border-white/8"></div>
+            <div class="my-3 border-t border-[#E5E0D8]"></div>
             <a class="admin-sidebar-link" href="/">
                 <i data-lucide="globe" class="h-[1.1rem] w-[1.1rem]"></i>
                 Booking Page
@@ -73,22 +66,17 @@
 
     <div class="min-h-screen lg:grid lg:grid-cols-[260px_1fr]">
         <!-- Desktop Sidebar (hidden on mobile, visible on lg+) -->
-        <aside class="hidden border-r border-white/10 bg-black/80 p-5 backdrop-blur-xl lg:sticky lg:top-0 lg:block lg:h-screen">
-            <a href="/" class="flex items-center gap-3">
-                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#d6b56d]/40 bg-[#d6b56d]/10 text-[#f2d78a]">
-                    <i data-lucide="sparkles" class="h-5 w-5"></i>
-                </span>
-                <span>
-                    <span class="block font-display text-xl font-bold">Ritesh Luxe</span>
-                    <span class="block text-xs uppercase tracking-[0.28em] text-[#d6b56d]">Admin Suite</span>
-                </span>
+        <aside class="hidden border-r border-[#E5E0D8] bg-white p-5 lg:sticky lg:top-0 lg:block lg:h-screen">
+            <a href="/" class="flex flex-col mb-1">
+                <span class="font-display text-xl font-bold text-[#222]">Ritesh Luxe</span>
+                <span class="text-[0.6rem] uppercase tracking-[0.22em] text-[#D7BC96] font-semibold">Admin Suite</span>
             </a>
-            <nav class="mt-10 grid gap-2 text-sm font-semibold text-white/70">
+            <nav class="mt-8 grid gap-1 text-sm font-semibold text-[#555]">
                 <a class="admin-nav active" href="#overview"><i data-lucide="layout-dashboard"></i>Overview</a>
                 <a class="admin-nav" href="#bookings"><i data-lucide="calendar-check"></i>Bookings</a>
                 <a class="admin-nav" href="#slots"><i data-lucide="clock-3"></i>Time Slots</a>
                 <a class="admin-nav" href="#services"><i data-lucide="scissors"></i>Services</a>
-                <div class="my-2 border-t border-white/8"></div>
+                <div class="my-2 border-t border-[#E5E0D8]"></div>
                 <a class="admin-nav" href="/"><i data-lucide="globe"></i>Booking Page</a>
             </nav>
         </aside>
@@ -96,16 +84,16 @@
         <!-- Main Content -->
         <main class="px-4 py-5 sm:px-5 sm:py-6 lg:px-8">
             <!-- Overview Section -->
-            <section id="overview" class="mb-8 rounded-[1.75rem] border border-white/10 bg-white/[0.05] p-5 shadow-2xl sm:p-6">
+            <section id="overview" class="mb-8 rounded border border-[#E5E0D8] bg-white p-5 sm:p-6">
                 <div class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
                     <div>
-                        <p class="text-sm font-bold uppercase tracking-[0.3em] text-[#d6b56d]">Dashboard</p>
-                        <h1 class="mt-2 font-display text-3xl font-bold sm:text-4xl">Booking command center</h1>
-                        <p class="mt-2 max-w-2xl text-sm text-white/55 sm:text-base">Track revenue, live slots, customers, and appointment status.</p>
+                        <p class="text-xs font-bold uppercase tracking-[0.25em] text-[#B89A6E]">Dashboard</p>
+                        <h1 class="mt-2 font-display text-3xl font-bold sm:text-4xl text-[#222]">Booking Command Center</h1>
+                        <p class="mt-2 max-w-2xl text-sm text-[#888] sm:text-base">Track revenue, live slots, customers, and appointment status.</p>
                     </div>
-                    <div class="shrink-0 rounded-2xl border border-[#d6b56d]/30 bg-[#d6b56d]/10 px-5 py-4 text-[#f2d78a]">
-                        <span class="text-sm text-white/60">Total revenue</span>
-                        <strong class="block text-2xl sm:text-3xl">Rs. {{ stats.total_revenue }}</strong>
+                    <div class="shrink-0 rounded border border-[#E5E0D8] bg-[#F7F5F1] px-5 py-4">
+                        <span class="text-xs text-[#888] uppercase tracking-wider font-semibold">Total Revenue</span>
+                        <strong class="block text-2xl sm:text-3xl text-[#222] font-display mt-1">Rs. {{ stats.total_revenue }}</strong>
                     </div>
                 </div>
             </section>
@@ -138,28 +126,28 @@
             <section class="mt-5 grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
                 <div class="admin-panel-luxe">
                     <div class="mb-5">
-                        <p class="text-sm font-bold uppercase tracking-[0.24em] text-[#d6b56d]">Status mix</p>
-                        <h2 class="mt-2 text-xl font-bold sm:text-2xl">Booking visualization</h2>
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#B89A6E]">Status Mix</p>
+                        <h2 class="mt-1 text-xl font-bold sm:text-2xl text-[#222]">Booking Visualization</h2>
                     </div>
                     <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
                         {% for status, count in stats.status_counts.items() %}
-                        <div class="rounded-2xl border border-white/10 bg-black/30 p-3 sm:p-4">
+                        <div class="rounded border border-[#E5E0D8] bg-[#F7F5F1] p-3 sm:p-4">
                             <span class="status-badge {{ status|lower }}">{{ status }}</span>
-                            <strong class="mt-3 block text-2xl sm:mt-4 sm:text-3xl">{{ count }}</strong>
+                            <strong class="mt-3 block text-2xl sm:mt-4 sm:text-3xl text-[#222]">{{ count }}</strong>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
 
                 <div class="admin-panel-luxe">
-                    <p class="text-sm font-bold uppercase tracking-[0.24em] text-[#d6b56d]">Revenue</p>
-                    <h2 class="mt-2 text-xl font-bold sm:text-2xl">Basic revenue view</h2>
-                    <div class="mt-6 h-4 overflow-hidden rounded-full bg-white/10">
-                        <div class="h-full rounded-full bg-gradient-to-r from-[#d6b56d] to-emerald-300" style="width: {{ 100 if stats.total_revenue > 0 else 8 }}%"></div>
+                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#B89A6E]">Revenue</p>
+                    <h2 class="mt-1 text-xl font-bold sm:text-2xl text-[#222]">Revenue Overview</h2>
+                    <div class="mt-6 h-2 overflow-hidden rounded-full bg-[#E5E0D8]">
+                        <div class="h-full rounded-full bg-[#D7BC96]" style="width: {{ 100 if stats.total_revenue > 0 else 8 }}%"></div>
                     </div>
-                    <div class="mt-5 flex items-center justify-between text-sm text-white/60">
+                    <div class="mt-4 flex items-center justify-between text-sm text-[#888]">
                         <span>Collected value</span>
-                        <span>Rs. {{ stats.total_revenue }}</span>
+                        <span class="font-semibold text-[#222]">Rs. {{ stats.total_revenue }}</span>
                     </div>
                 </div>
             </section>
@@ -168,8 +156,8 @@
             <section id="slots" class="admin-panel-luxe mt-5 scroll-mt-20">
                 <div class="mb-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <p class="text-sm font-bold uppercase tracking-[0.24em] text-[#d6b56d]">Slot calendar</p>
-                        <h2 class="mt-2 text-xl font-bold sm:text-2xl">Availability grid</h2>
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#B89A6E]">Slot Calendar</p>
+                        <h2 class="mt-1 text-xl font-bold sm:text-2xl text-[#222]">Availability Grid</h2>
                     </div>
                     <form id="slotForm" class="grid gap-3 sm:grid-cols-[1fr_140px_auto]">
                         <input class="lux-input" type="text" id="slotValue" placeholder="05:00 PM" required>
@@ -206,8 +194,8 @@
             <section id="bookings" class="admin-panel-luxe mt-5 scroll-mt-20">
                 <div class="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                     <div>
-                        <p class="text-sm font-bold uppercase tracking-[0.24em] text-[#d6b56d]">Customers</p>
-                        <h2 class="mt-2 text-xl font-bold sm:text-2xl">Booking details</h2>
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#B89A6E]">Customers</p>
+                        <h2 class="mt-1 text-xl font-bold sm:text-2xl text-[#222]">Booking Details</h2>
                     </div>
                     <div class="grid gap-3 sm:grid-cols-2">
                         <input id="bookingSearch" class="lux-input" type="search" placeholder="Search name, phone, service">
@@ -222,9 +210,9 @@
                 </div>
 
                 <!-- Desktop table (hidden on small screens) -->
-                <div class="hidden overflow-x-auto rounded-2xl border border-white/10 md:block">
-                    <table class="w-full min-w-[900px] bg-black/30 text-sm">
-                        <thead class="bg-white/[0.06] text-left text-xs uppercase tracking-[0.18em] text-white/45">
+                <div class="hidden overflow-x-auto rounded border border-[#E5E0D8] md:block">
+                    <table class="w-full min-w-[900px] bg-white text-sm">
+                        <thead class="bg-[#F7F5F1] text-left text-xs uppercase tracking-[0.18em] text-[#888]">
                             <tr>
                                 <th class="px-4 py-3.5 lg:px-5">Customer</th>
                                 <th class="px-4 py-3.5 lg:px-5">Phone</th>
@@ -237,16 +225,16 @@
                                 <th class="px-4 py-3.5 lg:px-5">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="bookingTableBody" class="divide-y divide-white/10">
+                        <tbody id="bookingTableBody" class="divide-y divide-[#E5E0D8]">
                             {% for booking in bookings %}
-                            <tr class="booking-row" data-search="{{ booking.customer_name }} {{ booking.phone }} {{ booking.service }}" data-status="{{ booking.status }}">
-                                <td class="px-4 py-3.5 font-bold lg:px-5">{{ booking.customer_name }}</td>
-                                <td class="px-4 py-3.5 text-white/65 lg:px-5">{{ booking.phone }}</td>
-                                <td class="px-4 py-3.5 text-white/65 lg:px-5">{{ booking.age }}</td>
-                                <td class="px-4 py-3.5 lg:px-5">{{ booking.service }}<span class="block text-xs text-white/45">{{ booking.service_duration }}</span></td>
-                                <td class="px-4 py-3.5 text-[#f2d78a] lg:px-5">Rs. {{ booking.price }}</td>
-                                <td class="px-4 py-3.5 text-white/65 lg:px-5">{{ booking.appointment_date }}</td>
-                                <td class="px-4 py-3.5 lg:px-5">{{ booking.time_slot }}</td>
+                            <tr class="booking-row hover:bg-[#F7F5F1]" data-search="{{ booking.customer_name }} {{ booking.phone }} {{ booking.service }}" data-status="{{ booking.status }}">
+                                <td class="px-4 py-3.5 font-semibold text-[#222] lg:px-5">{{ booking.customer_name }}</td>
+                                <td class="px-4 py-3.5 text-[#666] lg:px-5">{{ booking.phone }}</td>
+                                <td class="px-4 py-3.5 text-[#666] lg:px-5">{{ booking.age }}</td>
+                                <td class="px-4 py-3.5 text-[#222] lg:px-5">{{ booking.service }}<span class="block text-xs text-[#888]">{{ booking.service_duration }}</span></td>
+                                <td class="px-4 py-3.5 font-semibold text-[#B89A6E] lg:px-5">Rs. {{ booking.price }}</td>
+                                <td class="px-4 py-3.5 text-[#666] lg:px-5">{{ booking.appointment_date }}</td>
+                                <td class="px-4 py-3.5 text-[#555] lg:px-5">{{ booking.time_slot }}</td>
                                 <td class="px-4 py-3.5 lg:px-5">
                                     <select class="status-select status-badge {{ booking.status|lower }}" data-booking-id="{{ booking.id }}">
                                         <option value="Pending" {% if booking.status == "Pending" %}selected{% endif %}>Pending</option>
@@ -261,7 +249,7 @@
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="9" class="px-5 py-12 text-center text-white/45">No bookings yet. New appointments will appear here.</td>
+                                <td colspan="9" class="px-5 py-12 text-center text-[#aaa]">No bookings yet. New appointments will appear here.</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -271,11 +259,11 @@
                 <!-- Mobile booking cards (visible on small screens) -->
                 <div class="grid gap-3 md:hidden">
                     {% for booking in bookings %}
-                    <div class="booking-row rounded-2xl border border-white/10 bg-black/30 p-4" data-search="{{ booking.customer_name }} {{ booking.phone }} {{ booking.service }}" data-status="{{ booking.status }}">
+                    <div class="booking-row rounded border border-[#E5E0D8] bg-white p-4" data-search="{{ booking.customer_name }} {{ booking.phone }} {{ booking.service }}" data-status="{{ booking.status }}">
                         <div class="mb-3 flex items-start justify-between gap-3">
                             <div>
-                                <p class="text-base font-bold">{{ booking.customer_name }}</p>
-                                <p class="mt-0.5 text-xs text-white/50">{{ booking.phone }} · Age {{ booking.age }}</p>
+                                <p class="text-base font-semibold text-[#222]">{{ booking.customer_name }}</p>
+                                <p class="mt-0.5 text-xs text-[#888]">{{ booking.phone }} · Age {{ booking.age }}</p>
                             </div>
                             <select class="status-select status-badge {{ booking.status|lower }}" data-booking-id="{{ booking.id }}">
                                 <option value="Pending" {% if booking.status == "Pending" %}selected{% endif %}>Pending</option>
@@ -286,20 +274,20 @@
                         </div>
                         <div class="grid grid-cols-2 gap-2 text-sm">
                             <div>
-                                <span class="text-xs text-white/40">Service</span>
-                                <p class="font-semibold">{{ booking.service }}</p>
+                                <span class="text-xs text-[#aaa] uppercase tracking-wide">Service</span>
+                                <p class="font-semibold text-[#222]">{{ booking.service }}</p>
                             </div>
                             <div>
-                                <span class="text-xs text-white/40">Price</span>
-                                <p class="font-semibold text-[#f2d78a]">Rs. {{ booking.price }}</p>
+                                <span class="text-xs text-[#aaa] uppercase tracking-wide">Price</span>
+                                <p class="font-semibold text-[#B89A6E]">Rs. {{ booking.price }}</p>
                             </div>
                             <div>
-                                <span class="text-xs text-white/40">Date</span>
-                                <p class="text-white/70">{{ booking.appointment_date }}</p>
+                                <span class="text-xs text-[#aaa] uppercase tracking-wide">Date</span>
+                                <p class="text-[#555]">{{ booking.appointment_date }}</p>
                             </div>
                             <div>
-                                <span class="text-xs text-white/40">Slot</span>
-                                <p class="text-white/70">{{ booking.time_slot }}</p>
+                                <span class="text-xs text-[#aaa] uppercase tracking-wide">Slot</span>
+                                <p class="text-[#555]">{{ booking.time_slot }}</p>
                             </div>
                         </div>
                         <div class="mt-3 flex justify-end">
@@ -307,7 +295,7 @@
                         </div>
                     </div>
                     {% else %}
-                    <div class="rounded-2xl border border-white/10 bg-black/20 px-5 py-12 text-center text-white/45">
+                    <div class="rounded border border-[#E5E0D8] bg-[#F7F5F1] px-5 py-12 text-center text-[#aaa]">
                         No bookings yet. New appointments will appear here.
                     </div>
                     {% endfor %}
@@ -318,8 +306,8 @@
             <section id="services" class="admin-panel-luxe mt-5 scroll-mt-20">
                 <div class="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                     <div>
-                        <p class="text-sm font-bold uppercase tracking-[0.24em] text-[#d6b56d]">Menu</p>
-                        <h2 class="mt-2 text-xl font-bold sm:text-2xl">Service management</h2>
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#B89A6E]">Menu</p>
+                        <h2 class="mt-1 text-xl font-bold sm:text-2xl text-[#222]">Service Management</h2>
                     </div>
                     <form id="serviceForm" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_100px_120px_auto]">
                         <input class="lux-input" type="text" id="serviceName" placeholder="Service name" required>
@@ -331,13 +319,13 @@
 
                 <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                     {% for service in services %}
-                    <div class="rounded-2xl border border-white/10 bg-black/30 p-4 sm:rounded-3xl sm:p-5">
+                    <div class="rounded border border-[#E5E0D8] bg-[#F7F5F1] p-4 sm:p-5">
                         <div class="mb-4 flex items-center justify-between">
-                            <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#d6b56d]/15 text-[#f2d78a] sm:h-11 sm:w-11 sm:rounded-2xl"><i data-lucide="scissors"></i></span>
-                            <strong class="text-[#f2d78a]">Rs. {{ service.price }}</strong>
+                            <span class="grid h-10 w-10 shrink-0 place-items-center border border-[#E5E0D8] bg-white text-[#B89A6E]"><i data-lucide="scissors"></i></span>
+                            <strong class="text-[#B89A6E]">Rs. {{ service.price }}</strong>
                         </div>
-                        <h3 class="text-base font-bold sm:text-lg">{{ service.name }}</h3>
-                        <p class="mt-1 text-sm text-white/50">{{ service.duration }}</p>
+                        <h3 class="text-base font-semibold text-[#222] sm:text-lg">{{ service.name }}</h3>
+                        <p class="mt-1 text-sm text-[#888]">{{ service.duration }}</p>
                         <div class="mt-4 flex gap-2">
                             <button class="small edit-service"
                                 data-service-id="{{ service.id }}"
@@ -354,6 +342,7 @@
     </div>
 
     <div id="toast" class="toast hidden"></div>
-    <script src="/static/script.js?v=5"></script>
+    <script src="/static/script.js?v=6"></script>
+    <script>if (window.lucide) window.lucide.createIcons();</script>
 </body>
 </html>

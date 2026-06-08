@@ -1,9 +1,14 @@
+/* =============================================
+   RITESH LUXE SALON — script.js
+   Handles: booking, sliders, tabs, animations
+   ============================================= */
+
+// ---- Utility: fetch JSON ---- //
+
 async function sendJson(url, method, data) {
     const response = await fetch(url, {
         method,
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     });
 
@@ -12,7 +17,6 @@ async function sendJson(url, method, data) {
         const detail = Array.isArray(error.detail)
             ? error.detail.map((item) => item.msg).join(", ")
             : error.detail;
-
         throw new Error(detail || "Request failed");
     }
 
@@ -23,170 +27,219 @@ function reloadPage(delay = 0) {
     window.setTimeout(() => window.location.reload(), delay);
 }
 
+// ---- Toast Notification ---- //
+
 function showToast(message, type = "success") {
     const toast = document.getElementById("toast");
-
-    if (!toast) {
-        return;
-    }
-
+    if (!toast) return;
     toast.textContent = message;
     toast.className = `toast ${type}`;
-    window.setTimeout(() => {
-        toast.classList.add("hidden");
-    }, 4200);
+    window.setTimeout(() => { toast.classList.add("hidden"); }, 4500);
 }
 
-function setLoading(form, isLoading) {
-    const button = form.querySelector("button[type='submit']");
-    const buttonText = form.querySelector(".button-text");
-    const spinner = form.querySelector(".button-spinner");
+// ---- Loading State ---- //
 
-    if (!button) {
-        return;
-    }
-
-    button.disabled = isLoading;
-    button.classList.toggle("opacity-70", isLoading);
-
-    if (buttonText) {
-        buttonText.textContent = isLoading ? "Confirming..." : "Confirm Booking";
-    }
-
-    if (spinner) {
-        spinner.classList.toggle("hidden", !isLoading);
-    }
+function setLoading(isLoading) {
+    const btn = document.getElementById("bookingSubmitBtn");
+    if (!btn) return;
+    const text = btn.querySelector(".button-text");
+    const spinner = btn.querySelector(".button-spinner");
+    btn.disabled = isLoading;
+    if (text) text.textContent = isLoading ? "Confirming..." : "Book Appointment";
+    if (spinner) spinner.style.display = isLoading ? "inline-flex" : "none";
 }
 
-function refreshIcons() {
-    if (window.lucide) {
-        window.lucide.createIcons();
-    }
-}
+// ---- Scroll Animations (IntersectionObserver) ---- //
 
-refreshIcons();
+(function initScrollAnimations() {
+    const targets = document.querySelectorAll(".fade-up, .fade-in");
+    if (!targets.length) return;
 
-// ---- Generic Sidebar Helper ---- //
-
-function setupSidebar(openBtnId, closeBtnId, sidebarId, overlayId, direction) {
-    const openBtn = document.getElementById(openBtnId);
-    const closeBtn = document.getElementById(closeBtnId);
-    const sidebar = document.getElementById(sidebarId);
-    const overlay = document.getElementById(overlayId);
-
-    const hideClass = direction === "left" ? "-translate-x-full" : "translate-x-full";
-    const showClass = direction === "left" ? "translate-x-0" : "translate-x-0";
-
-    function open() {
-        if (!sidebar || !overlay) return;
-        overlay.classList.remove("hidden");
-        sidebar.classList.remove(hideClass);
-        sidebar.classList.add(showClass);
-        document.body.style.overflow = "hidden";
-        refreshIcons();
-    }
-
-    function close() {
-        if (!sidebar || !overlay) return;
-        sidebar.classList.remove(showClass);
-        sidebar.classList.add(hideClass);
-        overlay.classList.add("hidden");
-        document.body.style.overflow = "";
-    }
-
-    if (openBtn) openBtn.addEventListener("click", open);
-    if (closeBtn) closeBtn.addEventListener("click", close);
-    if (overlay) overlay.addEventListener("click", close);
-
-    // Close on link click
-    if (sidebar) {
-        sidebar.querySelectorAll("a, .sidebar-link, .admin-sidebar-link").forEach((link) => {
-            link.addEventListener("click", close);
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                io.unobserve(entry.target);
+            }
         });
+    }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
+
+    targets.forEach((el) => io.observe(el));
+})();
+
+// ---- Navbar Mobile Menu ---- //
+
+(function initNav() {
+    const hamburger = document.getElementById("navHamburger");
+    const menu = document.getElementById("mobileMenu");
+    if (!hamburger || !menu) return;
+
+    hamburger.addEventListener("click", () => {
+        const open = menu.classList.toggle("open");
+        hamburger.classList.toggle("open", open);
+        hamburger.setAttribute("aria-expanded", open);
+    });
+
+    document.querySelectorAll(".mob-link").forEach((link) => {
+        link.addEventListener("click", () => {
+            menu.classList.remove("open");
+            hamburger.classList.remove("open");
+            hamburger.setAttribute("aria-expanded", "false");
+        });
+    });
+
+    // Close on outside click
+    document.addEventListener("click", (e) => {
+        if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
+            menu.classList.remove("open");
+            hamburger.classList.remove("open");
+            hamburger.setAttribute("aria-expanded", "false");
+        }
+    });
+})();
+
+// ---- Category Tabs (Services) ---- //
+
+(function initServiceTabs() {
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    const tabPanels = document.querySelectorAll(".tab-panel");
+
+    if (!tabButtons.length) return;
+
+    tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const target = btn.dataset.tab;
+
+            tabButtons.forEach((b) => b.classList.remove("active"));
+            tabPanels.forEach((p) => p.classList.remove("active"));
+
+            btn.classList.add("active");
+            const panel = document.getElementById(`tab-${target}`);
+            if (panel) {
+                panel.classList.add("active");
+                // Re-trigger fade animations in the panel
+                panel.querySelectorAll(".fade-up").forEach((el) => {
+                    el.classList.remove("visible");
+                    requestAnimationFrame(() => el.classList.add("visible"));
+                });
+            }
+        });
+    });
+})();
+
+// ---- Stylist Slider ---- //
+
+(function initStylistSlider() {
+    const slider = document.getElementById("stylistSlider");
+    const prevBtn = document.getElementById("stylistPrev");
+    const nextBtn = document.getElementById("stylistNext");
+    const dots = document.querySelectorAll("#stylistDots .slider-dot");
+
+    if (!slider) return;
+
+    const slides = slider.querySelectorAll(".stylist-slide");
+    let current = 0;
+    const total = slides.length;
+
+    function goTo(index) {
+        current = (index + total) % total;
+        slider.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((d, i) => d.classList.toggle("active", i === current));
     }
-}
 
-// Index page sidebar (slides from right)
-setupSidebar("mobileMenuBtn", "closeSidebarBtn", "mobileSidebar", "sidebarOverlay", "right");
+    if (prevBtn) prevBtn.addEventListener("click", () => goTo(current - 1));
+    if (nextBtn) nextBtn.addEventListener("click", () => goTo(current + 1));
+    dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
 
-// Admin page sidebar (slides from left)
-setupSidebar("adminMenuBtn", "closeAdminSidebar", "adminSidebar", "adminOverlay", "left");
+    // Auto-advance
+    let autoplay = setInterval(() => goTo(current + 1), 5000);
+    slider.parentElement.addEventListener("mouseenter", () => clearInterval(autoplay));
+    slider.parentElement.addEventListener("mouseleave", () => {
+        autoplay = setInterval(() => goTo(current + 1), 5000);
+    });
+})();
+
+// ---- Testimonials Slider ---- //
+
+(function initTestimonialSlider() {
+    const slides = document.getElementById("testimonialSlides");
+    const dots = document.querySelectorAll("#testimonialDots .testimonial-dot");
+
+    if (!slides) return;
+
+    let current = 0;
+    const total = dots.length;
+
+    function goTo(index) {
+        current = (index + total) % total;
+        slides.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((d, i) => d.classList.toggle("active", i === current));
+    }
+
+    dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
+
+    // Auto-advance every 5s
+    setInterval(() => goTo(current + 1), 5000);
+})();
+
+// ---- Slot Refresh (when date changes) ---- //
 
 async function refreshSlotsForDate(dateValue) {
-    if (!dateValue) {
-        return;
-    }
-
+    if (!dateValue) return;
     try {
         const response = await fetch(`/api/slot-cards/${dateValue}`);
         const slots = await response.json();
 
-        // Update the slot select dropdown
+        // Update hidden select
         const slotSelect = document.getElementById("slot");
-
         if (slotSelect) {
             slotSelect.innerHTML = "";
-
             slots.forEach((slot) => {
                 const option = document.createElement("option");
                 option.value = slot.slot_time;
-                option.textContent = `${slot.slot_time} - ${slot.state === "available" ? "Available" : "Booked"}`;
-
-                if (slot.state !== "available") {
-                    option.disabled = true;
-                }
-
+                option.textContent = `${slot.slot_time} — ${slot.state === "available" ? "Available" : "Booked"}`;
+                if (slot.state !== "available") option.disabled = true;
                 slotSelect.appendChild(option);
             });
-
-            // Select the first available slot
-            const firstAvailable = slots.find((slot) => slot.state === "available");
-
-            if (firstAvailable) {
-                slotSelect.value = firstAvailable.slot_time;
-            }
+            const firstAvail = slots.find((s) => s.state === "available");
+            if (firstAvail) slotSelect.value = firstAvail.slot_time;
         }
 
-        // Update the slot chip buttons
+        // Update slot chips
         const container = document.getElementById("slotChipsContainer");
-
         if (container) {
             container.innerHTML = "";
-
             slots.forEach((slot) => {
-                const button = document.createElement("button");
-                button.type = "button";
-                button.className = `slot-chip ${slot.state}`;
-                button.dataset.slot = slot.slot_time;
-
-                if (slot.state !== "available") {
-                    button.disabled = true;
-                }
-
-                button.innerHTML = `<span>${slot.slot_time}</span><small>${slot.state.charAt(0).toUpperCase() + slot.state.slice(1)}</small>`;
-                container.appendChild(button);
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = `slot-chip ${slot.state}`;
+                btn.dataset.slot = slot.slot_time;
+                if (slot.state !== "available") btn.disabled = true;
+                btn.innerHTML = `${slot.slot_time}<small>${slot.state}</small>`;
+                container.appendChild(btn);
             });
-
-            // Re-attach click handlers for available chips
-            container.querySelectorAll(".slot-chip.available").forEach((chip) => {
-                chip.addEventListener("click", () => {
-                    const select = document.getElementById("slot");
-
-                    if (select) {
-                        select.value = chip.dataset.slot;
-                    }
-
-                    container.querySelectorAll(".slot-chip").forEach((item) => item.classList.remove("selected"));
-                    chip.classList.add("selected");
-                });
-            });
+            attachSlotChipHandlers();
         }
-    } catch (error) {
-        console.error("Failed to refresh slots:", error);
+    } catch (err) {
+        console.error("Failed to refresh slots:", err);
     }
 }
 
-// ---- Booking form ---- //
+function attachSlotChipHandlers() {
+    const slotSelect = document.getElementById("slot");
+    const container = document.getElementById("slotChipsContainer");
+    if (!container) return;
+
+    container.querySelectorAll(".slot-chip.available").forEach((chip) => {
+        chip.addEventListener("click", () => {
+            if (slotSelect) slotSelect.value = chip.dataset.slot;
+            container.querySelectorAll(".slot-chip").forEach((c) => c.classList.remove("selected"));
+            chip.classList.add("selected");
+        });
+    });
+}
+
+// ---- Booking Form ---- //
 
 const bookingForm = document.getElementById("bookingForm");
 
@@ -194,29 +247,10 @@ if (bookingForm) {
     const slotSelect = document.getElementById("slot");
     const dateInput = document.getElementById("appointmentDate");
 
-    // Refresh slots when date changes
-    if (dateInput) {
-        dateInput.addEventListener("change", () => {
-            refreshSlotsForDate(dateInput.value);
-        });
-    }
+    // Initial chip handlers
+    attachSlotChipHandlers();
 
-    document.querySelectorAll(".service-card").forEach((card) => {
-        card.addEventListener("click", () => {
-            document.getElementById("service").value = card.dataset.service;
-            document.getElementById("bookingForm").scrollIntoView({ behavior: "smooth" });
-            showToast(`${card.dataset.service} selected`, "success");
-        });
-    });
-
-    document.querySelectorAll(".slot-chip.available").forEach((chip) => {
-        chip.addEventListener("click", () => {
-            slotSelect.value = chip.dataset.slot;
-            document.querySelectorAll(".slot-chip").forEach((item) => item.classList.remove("selected"));
-            chip.classList.add("selected");
-        });
-    });
-
+    // Sync chip selection with select
     if (slotSelect) {
         slotSelect.addEventListener("change", () => {
             document.querySelectorAll(".slot-chip").forEach((chip) => {
@@ -225,10 +259,26 @@ if (bookingForm) {
         });
     }
 
+    // Refresh on date change
+    if (dateInput) {
+        dateInput.addEventListener("change", () => refreshSlotsForDate(dateInput.value));
+    }
+
+    // Service card click → pre-select in form and scroll
+    document.querySelectorAll(".service-card[data-service]").forEach((card) => {
+        card.addEventListener("click", () => {
+            const serviceSelect = document.getElementById("service");
+            if (serviceSelect) serviceSelect.value = card.dataset.service;
+            document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" });
+            showToast(`${card.dataset.service} selected`, "success");
+        });
+    });
+
+    // Form submit
     bookingForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const message = document.getElementById("message");
+        const msgEl = document.getElementById("message");
         const data = {
             customer_name: document.getElementById("name").value.trim(),
             phone: document.getElementById("phone").value.trim(),
@@ -238,189 +288,169 @@ if (bookingForm) {
             time_slot: document.getElementById("slot").value
         };
 
+        if (!data.time_slot) {
+            if (msgEl) { msgEl.textContent = "Please select a time slot."; msgEl.className = "form-message error"; }
+            return;
+        }
+
         try {
-            setLoading(bookingForm, true);
+            setLoading(true);
             const result = await sendJson("/api/bookings", "POST", data);
-            const customerWhatsappText = result.whatsapp_sent
-                ? "Customer WhatsApp sent."
-                : `Customer WhatsApp not sent: ${result.whatsapp_error || "not configured"}.`;
-            const adminWhatsappText = result.admin_whatsapp_sent
-                ? "Admin WhatsApp sent."
-                : `Admin WhatsApp not sent: ${result.admin_whatsapp_error || "not configured"}.`;
 
-            message.textContent = `${customerWhatsappText} ${adminWhatsappText}`;
-            message.className = "message mt-4 text-sm font-semibold text-emerald-300";
+            const waText = result.whatsapp_sent ? "WhatsApp sent." : "WhatsApp not configured.";
+            if (msgEl) { msgEl.textContent = waText; msgEl.className = "form-message success"; }
 
-            const successModal = document.getElementById("successModal");
-            const successModalText = document.getElementById("successModalText");
-
-            if (successModal && successModalText) {
-                successModalText.textContent = `${data.customer_name}, your ${data.service} booking is confirmed for ${data.appointment_date} at ${data.time_slot}.`;
-                successModal.classList.remove("hidden");
-                successModal.classList.add("grid");
-                refreshIcons();
+            // Success modal
+            const modal = document.getElementById("successModal");
+            const modalText = document.getElementById("successModalText");
+            if (modal && modalText) {
+                modalText.textContent = `${data.customer_name}, your ${data.service} is booked for ${data.appointment_date} at ${data.time_slot}.`;
+                modal.classList.add("open");
             }
 
-            showToast("Booking confirmed successfully", "success");
+            showToast("Booking confirmed!", "success");
 
-            // Client-side WhatsApp redirect
-            const targetPhone = "917028111146"; // Admin number
-            const waMessage = `Booking Confirmation:\nName: ${data.customer_name}\nPhone: ${data.phone}\nService: ${data.service}\nDate: ${data.appointment_date}\nTime: ${data.time_slot}`;
-            const encodedText = encodeURIComponent(waMessage);
-            
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            const isAndroid = /android/i.test(userAgent);
-            const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-            
-            let waUrl = "";
-            if (isAndroid) {
-                waUrl = `intent://send/+${targetPhone}?text=${encodedText}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
-            } else if (isIOS) {
-                waUrl = `whatsapp://send?phone=${targetPhone}&text=${encodedText}`;
-            } else {
-                // Desktop
-                waUrl = `https://wa.me/${targetPhone}?text=${encodedText}`;
-            }
-            
-            // Open WhatsApp in a new tab/window
+            // WhatsApp redirect
+            const phone = "917028111146";
+            const waMsg = `Booking Confirmation:\nName: ${data.customer_name}\nPhone: ${data.phone}\nService: ${data.service}\nDate: ${data.appointment_date}\nTime: ${data.time_slot}`;
+            const encoded = encodeURIComponent(waMsg);
+            const ua = navigator.userAgent;
+            let waUrl = /android/i.test(ua)
+                ? `intent://send/+${phone}?text=${encoded}#Intent;scheme=whatsapp;package=com.whatsapp;end`
+                : /iPad|iPhone|iPod/.test(ua)
+                    ? `whatsapp://send?phone=${phone}&text=${encoded}`
+                    : `https://wa.me/${phone}?text=${encoded}`;
             window.open(waUrl, "_blank");
 
             bookingForm.reset();
-
-            // Refresh slots for today after booking
             const todayInput = document.getElementById("appointmentDate");
+            if (todayInput) refreshSlotsForDate(todayInput.value || new Date().toISOString().split("T")[0]);
 
-            if (todayInput) {
-                refreshSlotsForDate(todayInput.value || new Date().toISOString().split("T")[0]);
-            }
-        } catch (error) {
-            message.textContent = error.message;
-            message.className = "message mt-4 text-sm font-semibold text-rose-300";
-            showToast(error.message, "error");
+        } catch (err) {
+            if (msgEl) { msgEl.textContent = err.message; msgEl.className = "form-message error"; }
+            showToast(err.message, "error");
         } finally {
-            setLoading(bookingForm, false);
+            setLoading(false);
         }
     });
 }
 
+// Close success modal
 const closeSuccessModal = document.getElementById("closeSuccessModal");
-
 if (closeSuccessModal) {
     closeSuccessModal.addEventListener("click", () => {
-        document.getElementById("successModal").classList.add("hidden");
-        document.getElementById("successModal").classList.remove("grid");
+        document.getElementById("successModal")?.classList.remove("open");
     });
 }
 
-const serviceForm = document.getElementById("serviceForm");
+document.getElementById("successModal")?.addEventListener("click", (e) => {
+    if (e.target === document.getElementById("successModal")) {
+        document.getElementById("successModal").classList.remove("open");
+    }
+});
 
+// ---- Contact Form (display only, no backend) ---- //
+
+const contactFormMain = document.getElementById("contactFormMain");
+if (contactFormMain) {
+    contactFormMain.addEventListener("submit", (e) => {
+        e.preventDefault();
+        showToast("Message sent! We will contact you shortly.", "success");
+        contactFormMain.reset();
+    });
+}
+
+// ---- Admin: Service Form ---- //
+
+const serviceForm = document.getElementById("serviceForm");
 if (serviceForm) {
     serviceForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-
         await sendJson("/api/services", "POST", {
             name: document.getElementById("serviceName").value,
             price: document.getElementById("servicePrice").value,
             duration: document.getElementById("serviceDuration").value
         });
-
         showToast("Service added", "success");
         reloadPage(500);
     });
 }
 
-const slotForm = document.getElementById("slotForm");
+// ---- Admin: Slot Form ---- //
 
+const slotForm = document.getElementById("slotForm");
 if (slotForm) {
     slotForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-
         await sendJson("/api/time-slots", "POST", {
             slot_time: document.getElementById("slotValue").value,
             is_available: document.getElementById("slotAvailable").value
         });
-
         showToast("Slot added", "success");
         reloadPage(500);
     });
 }
 
+// ---- Admin: Booking status / delete ---- //
+
 document.querySelectorAll(".status-select").forEach((select) => {
     select.addEventListener("change", async () => {
-        await sendJson(`/api/bookings/${select.dataset.bookingId}/status`, "PATCH", {
-            status: select.value
-        });
-
+        await sendJson(`/api/bookings/${select.dataset.bookingId}/status`, "PATCH", { status: select.value });
         select.className = `status-select status-badge ${select.value.toLowerCase()}`;
         select.closest(".booking-row").dataset.status = select.value;
-        showToast("Booking status updated", "success");
+        showToast("Status updated", "success");
         reloadPage(650);
     });
 });
 
-document.querySelectorAll(".delete-booking").forEach((button) => {
-    button.addEventListener("click", async () => {
-        await fetch(`/api/bookings/${button.dataset.bookingId}`, { method: "DELETE" });
+document.querySelectorAll(".delete-booking").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+        await fetch(`/api/bookings/${btn.dataset.bookingId}`, { method: "DELETE" });
         showToast("Booking deleted", "success");
         reloadPage(500);
     });
 });
 
-document.querySelectorAll(".delete-service").forEach((button) => {
-    button.addEventListener("click", async () => {
-        await fetch(`/api/services/${button.dataset.serviceId}`, { method: "DELETE" });
+document.querySelectorAll(".delete-service").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+        await fetch(`/api/services/${btn.dataset.serviceId}`, { method: "DELETE" });
         showToast("Service deleted", "success");
         reloadPage(500);
     });
 });
 
-document.querySelectorAll(".edit-service").forEach((button) => {
-    button.addEventListener("click", async () => {
-        const name = prompt("Service name", button.dataset.name);
-        const price = prompt("Price", button.dataset.price);
-        const duration = prompt("Duration", button.dataset.duration);
-
-        if (!name || !price || !duration) {
-            return;
-        }
-
-        await sendJson(`/api/services/${button.dataset.serviceId}`, "PUT", {
-            name,
-            price,
-            duration
-        });
-
+document.querySelectorAll(".edit-service").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+        const name = prompt("Service name", btn.dataset.name);
+        const price = prompt("Price", btn.dataset.price);
+        const duration = prompt("Duration", btn.dataset.duration);
+        if (!name || !price || !duration) return;
+        await sendJson(`/api/services/${btn.dataset.serviceId}`, "PUT", { name, price, duration });
         showToast("Service updated", "success");
         reloadPage(500);
     });
 });
 
-document.querySelectorAll(".delete-slot").forEach((button) => {
-    button.addEventListener("click", async () => {
-        await fetch(`/api/time-slots/${button.dataset.slotId}`, { method: "DELETE" });
+document.querySelectorAll(".delete-slot").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+        await fetch(`/api/time-slots/${btn.dataset.slotId}`, { method: "DELETE" });
         showToast("Slot deleted", "success");
         reloadPage(500);
     });
 });
 
-document.querySelectorAll(".edit-slot").forEach((button) => {
-    button.addEventListener("click", async () => {
-        const slot = prompt("Time slot", button.dataset.slot);
-        const isAvailable = prompt("Available? Type Yes or No", button.dataset.available);
-
-        if (!slot || !isAvailable) {
-            return;
-        }
-
-        await sendJson(`/api/time-slots/${button.dataset.slotId}`, "PUT", {
-            slot_time: slot,
-            is_available: isAvailable
-        });
-
+document.querySelectorAll(".edit-slot").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+        const slot = prompt("Time slot", btn.dataset.slot);
+        const isAvailable = prompt("Available? Type Yes or No", btn.dataset.available);
+        if (!slot || !isAvailable) return;
+        await sendJson(`/api/time-slots/${btn.dataset.slotId}`, "PUT", { slot_time: slot, is_available: isAvailable });
         showToast("Slot updated", "success");
         reloadPage(500);
     });
 });
+
+// ---- Admin: Booking search/filter ---- //
 
 const bookingSearch = document.getElementById("bookingSearch");
 const bookingStatusFilter = document.getElementById("bookingStatusFilter");
@@ -428,21 +458,49 @@ const bookingStatusFilter = document.getElementById("bookingStatusFilter");
 function filterBookings() {
     const query = (bookingSearch?.value || "").toLowerCase();
     const status = bookingStatusFilter?.value || "";
-
     document.querySelectorAll(".booking-row").forEach((row) => {
         const matchesQuery = row.dataset.search.toLowerCase().includes(query);
         const matchesStatus = !status || row.dataset.status === status;
-
         row.classList.toggle("hidden", !(matchesQuery && matchesStatus));
     });
 }
 
-if (bookingSearch) {
-    bookingSearch.addEventListener("input", filterBookings);
+if (bookingSearch) bookingSearch.addEventListener("input", filterBookings);
+if (bookingStatusFilter) bookingStatusFilter.addEventListener("change", filterBookings);
+
+// ---- Admin sidebar ---- //
+
+function setupSidebar(openBtnId, closeBtnId, sidebarId, overlayId, direction) {
+    const openBtn = document.getElementById(openBtnId);
+    const closeBtn = document.getElementById(closeBtnId);
+    const sidebar = document.getElementById(sidebarId);
+    const overlay = document.getElementById(overlayId);
+    const hideClass = direction === "left" ? "-translate-x-full" : "translate-x-full";
+
+    function open() {
+        if (!sidebar || !overlay) return;
+        overlay.classList.remove("hidden");
+        sidebar.classList.remove(hideClass);
+        sidebar.classList.add("translate-x-0");
+        document.body.style.overflow = "hidden";
+    }
+
+    function close() {
+        if (!sidebar || !overlay) return;
+        sidebar.classList.remove("translate-x-0");
+        sidebar.classList.add(hideClass);
+        overlay.classList.add("hidden");
+        document.body.style.overflow = "";
+    }
+
+    if (openBtn) openBtn.addEventListener("click", open);
+    if (closeBtn) closeBtn.addEventListener("click", close);
+    if (overlay) overlay.addEventListener("click", close);
+    if (sidebar) {
+        sidebar.querySelectorAll("a, .sidebar-link, .admin-sidebar-link").forEach((link) => {
+            link.addEventListener("click", close);
+        });
+    }
 }
 
-if (bookingStatusFilter) {
-    bookingStatusFilter.addEventListener("change", filterBookings);
-}
-
-
+setupSidebar("adminMenuBtn", "closeAdminSidebar", "adminSidebar", "adminOverlay", "left");

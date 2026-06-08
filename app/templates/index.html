@@ -3,287 +3,824 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ritesh Luxe Salon | Premium Grooming & Spa - Kothrud, Pune</title>
-    <meta name="description" content="Ritesh Luxe Salon Studio in Kothrud, Pune offers premium grooming, spa treatments, and luxury salon services. Book your appointment online.">
+    <title>Ritesh Luxe Salon | Premium Hair Studio — Kothrud, Pune</title>
+    <meta name="description" content="Ritesh Luxe Salon in Kothrud, Pune. Premium hair care, bridal styling, spa and grooming services. Book your appointment online.">
     <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css?v=5">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=6">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
-<body class="bg-[#080808] text-white antialiased">
-    <!-- Navigation -->
-    <nav class="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/60 backdrop-blur-xl">
-        <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
-            <a href="/" class="flex items-center gap-3">
-                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#d6b56d]/40 bg-[#d6b56d]/10 text-[#f2d78a]">
-                    <i data-lucide="sparkles" class="h-5 w-5"></i>
-                </span>
-                <span>
-                    <span class="block font-display text-xl font-bold leading-tight">Ritesh Luxe</span>
-                    <span class="block text-xs uppercase tracking-[0.28em] text-[#d6b56d]">Salon Studio</span>
-                </span>
+<body>
+
+<!-- ========================
+     NAVBAR
+     ======================== -->
+<nav class="navbar" id="navbar">
+    <div class="container">
+        <div class="navbar-inner">
+            <a href="/" class="nav-logo">
+                <span class="nav-logo-name">Ritesh Luxe Salon</span>
+                <span class="nav-logo-tagline">Premium Hair Studio · Pune</span>
             </a>
-            <!-- Desktop nav links -->
-            <div class="hidden items-center gap-8 text-sm font-semibold text-white/70 md:flex">
-                <a class="transition hover:text-[#f2d78a]" href="#services">Services</a>
-                <a class="transition hover:text-[#f2d78a]" href="#booking">Booking</a>
-                <a class="transition hover:text-[#f2d78a]" href="#contact">Contact</a>
-                <a class="transition hover:text-[#f2d78a]" href="/admin">Admin</a>
-            </div>
-            <div class="flex items-center gap-3">
-                <a href="#booking" class="hidden rounded-full bg-[#d6b56d] px-5 py-2.5 text-sm font-bold text-black shadow-[0_0_35px_rgba(214,181,109,0.35)] transition hover:bg-[#f2d78a] md:inline-flex">
-                    Book Now
-                </a>
-                <!-- Mobile hamburger button -->
-                <button id="mobileMenuBtn" type="button" class="grid h-11 w-11 place-items-center rounded-xl border border-white/12 bg-white/8 text-white/80 transition hover:bg-white/12 hover:text-[#f2d78a] md:hidden" aria-label="Open menu">
-                    <i data-lucide="menu" class="h-5 w-5"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Mobile Sidebar Overlay -->
-    <div id="sidebarOverlay" class="fixed inset-0 z-[60] hidden bg-black/60 backdrop-blur-sm"></div>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#stylists">Stylists</a></li>
+                <li><a href="#lookbook">Lookbook</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
 
-    <!-- Mobile Sidebar -->
-    <aside id="mobileSidebar" class="fixed top-0 right-0 z-[70] flex h-full w-72 translate-x-full flex-col border-l border-white/10 bg-[#0c0c0c]/95 backdrop-blur-2xl transition-transform duration-300 ease-in-out">
-        <div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
-            <span class="font-display text-lg font-bold text-[#f2d78a]">Menu</span>
-            <button id="closeSidebarBtn" type="button" class="grid h-10 w-10 place-items-center rounded-xl border border-white/12 bg-white/8 text-white/70 transition hover:bg-white/12 hover:text-white" aria-label="Close menu">
-                <i data-lucide="x" class="h-5 w-5"></i>
+            <a href="#booking" class="nav-cta">
+                Book Appointment
+            </a>
+
+            <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
         </div>
-        <nav class="flex flex-1 flex-col gap-1 px-4 py-5">
-            <a href="#services" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3.5 text-[0.95rem] font-semibold text-white/75 transition hover:bg-[#d6b56d]/12 hover:text-[#f2d78a]">
-                <i data-lucide="scissors" class="h-5 w-5 text-[#d6b56d]/70"></i>
-                Services
-            </a>
-            <a href="#booking" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3.5 text-[0.95rem] font-semibold text-white/75 transition hover:bg-[#d6b56d]/12 hover:text-[#f2d78a]">
-                <i data-lucide="calendar-check" class="h-5 w-5 text-[#d6b56d]/70"></i>
-                Booking
-            </a>
-            <a href="#contact" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3.5 text-[0.95rem] font-semibold text-white/75 transition hover:bg-[#d6b56d]/12 hover:text-[#f2d78a]">
-                <i data-lucide="phone" class="h-5 w-5 text-[#d6b56d]/70"></i>
-                Contact
-            </a>
-            <a href="/admin" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3.5 text-[0.95rem] font-semibold text-white/75 transition hover:bg-[#d6b56d]/12 hover:text-[#f2d78a]">
-                <i data-lucide="shield" class="h-5 w-5 text-[#d6b56d]/70"></i>
-                Admin
-            </a>
-        </nav>
-        <div class="border-t border-white/10 px-5 py-5">
-            <a href="#booking" class="sidebar-link flex w-full items-center justify-center gap-2 rounded-2xl bg-[#d6b56d] px-5 py-3.5 text-sm font-bold text-black shadow-[0_0_25px_rgba(214,181,109,0.25)] transition hover:bg-[#f2d78a]">
-                <i data-lucide="calendar-plus" class="h-4 w-4"></i>
-                Book Now
-            </a>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu" role="navigation">
+    <ul>
+        <li><a href="#hero" class="mob-link">Home</a></li>
+        <li><a href="#services" class="mob-link">Services</a></li>
+        <li><a href="#stylists" class="mob-link">Stylists</a></li>
+        <li><a href="#lookbook" class="mob-link">Lookbook</a></li>
+        <li><a href="#about" class="mob-link">About Us</a></li>
+        <li><a href="#contact" class="mob-link">Contact</a></li>
+    </ul>
+    <a href="#booking" class="mob-cta mob-link">Book Appointment</a>
+</div>
+
+<!-- ========================
+     HERO SECTION
+     ======================== -->
+<section class="hero" id="hero">
+    <div class="hero-left fade-up">
+        <p class="hero-eyebrow">Kothrud, Pune — Since 2020</p>
+
+        <h1 class="font-display hero-title">
+            Ritesh<br>Luxe<br>Salon
+        </h1>
+
+        <p class="hero-tagline">"Your Hair Deserves The Best."</p>
+
+        <div class="hero-info">
+            <div>
+                <p class="hero-info-label">Working Hours</p>
+                <p class="hero-info-value">
+                    Mon: Closed<br>
+                    Tue–Sat: 10 AM – 8 PM<br>
+                    Sun: Appointment Only
+                </p>
+            </div>
+            <div>
+                <p class="hero-info-label">Location</p>
+                <p class="hero-info-value">
+                    Kothrud, Pune<br>
+                    Maharashtra, India<br>
+                    +91 7028111146
+                </p>
+            </div>
         </div>
-    </aside>
 
-    <main>
-        <!-- Hero + Booking Section -->
-        <section class="relative min-h-screen overflow-hidden pt-28">
-            <div class="absolute inset-0">
-                <img class="h-full w-full object-cover opacity-45" src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1800&q=80" alt="Luxury salon interior">
-                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/82 to-black/25"></div>
-                <div class="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-[#080808] to-transparent"></div>
+        <a href="#booking" class="hero-btn">
+            Book Appointment
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+    </div>
+
+    <div class="hero-right">
+        <img
+            src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1400&q=85"
+            alt="Premium luxury salon interior – Ritesh Luxe Salon, Pune"
+            loading="eager"
+        >
+        <div class="hero-right-overlay">
+            <span>Trusted by</span>
+            <strong>{{ stats.total_bookings }}+ Guests</strong>
+        </div>
+    </div>
+</section>
+
+<!-- ========================
+     SERVICES SECTION
+     ======================== -->
+<section class="services-section" id="services">
+    <div class="container">
+        <div class="services-header fade-up">
+            <div>
+                <p class="section-eyebrow">What We Offer</p>
+                <h2 class="section-title font-display">Our Services</h2>
             </div>
+            <p class="section-subtitle">
+                Curated treatments crafted for every client — delivered with expertise and premium care.
+            </p>
+        </div>
 
-            <div class="relative mx-auto grid max-w-7xl items-start gap-10 px-5 pb-16 pt-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:px-8">
-                <div class="flex flex-col justify-center">
-                    <span class="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-[#d6b56d]/30 bg-white/10 px-4 py-2 text-sm font-semibold text-[#f2d78a] backdrop-blur">
-                        <i data-lucide="crown" class="h-4 w-4"></i>
-                        Premium grooming and spa appointments
-                    </span>
-                    <h1 class="font-display text-5xl font-bold leading-tight text-white md:text-7xl">
-                        Luxury salon care, booked in minutes.
-                    </h1>
-                    <p class="mt-6 max-w-2xl text-lg leading-8 text-white/72">
-                        Choose a signature service, reserve a live slot, and receive instant booking confirmation with WhatsApp alerts.
-                    </p>
-                    <div class="mt-9 grid max-w-md grid-cols-3 gap-3">
-                        <div class="rounded-2xl border border-white/10 bg-white/10 p-4 text-center backdrop-blur">
-                            <strong class="block text-2xl text-[#f2d78a]">{{ services|length }}</strong>
-                            <span class="mt-1 block text-xs text-white/60">Luxury services</span>
-                        </div>
-                        <div class="rounded-2xl border border-white/10 bg-white/10 p-4 text-center backdrop-blur">
-                            <strong class="block text-2xl text-emerald-300">{{ stats.available_slots }}</strong>
-                            <span class="mt-1 block text-xs text-white/60">Open slots</span>
-                        </div>
-                        <div class="rounded-2xl border border-white/10 bg-white/10 p-4 text-center backdrop-blur">
-                            <strong class="block text-2xl text-rose-300">{{ stats.booked_slots }}</strong>
-                            <span class="mt-1 block text-xs text-white/60">Booked slots</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Category Tabs -->
+        <div class="category-tabs fade-up" id="categoryTabs">
+            <button class="tab-btn active" data-tab="haircut">Haircut & Styling</button>
+            <button class="tab-btn" data-tab="coloring">Hair Coloring</button>
+            <button class="tab-btn" data-tab="bridal">Bridal</button>
+            <button class="tab-btn" data-tab="spa">Spa</button>
+            <button class="tab-btn" data-tab="facials">Facials</button>
+            <button class="tab-btn" data-tab="extensions">Hair Extensions</button>
+        </div>
 
-                <!-- Booking Form -->
-                <form id="bookingForm" class="glass-panel scroll-mt-28 rounded-[2rem] border border-white/12 p-6 shadow-2xl md:p-8" action="#booking">
-                    <div id="booking" class="mb-6 flex items-center justify-between gap-4">
-                        <div>
-                            <p class="text-sm font-bold uppercase tracking-[0.3em] text-[#d6b56d]">Reserve visit</p>
-                            <h2 class="mt-2 font-display text-3xl font-bold">Book Appointment</h2>
-                        </div>
-                        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#d6b56d]/15 text-[#f2d78a]">
-                            <i data-lucide="calendar-check" class="h-6 w-6"></i>
-                        </span>
-                    </div>
-
-                    <div class="grid gap-4 sm:grid-cols-2">
-                        <label class="field-label sm:col-span-2">Customer name
-                            <input class="lux-input mt-2" type="text" id="name" placeholder="Enter full name" required>
-                        </label>
-                        <label class="field-label sm:col-span-2">Mobile / WhatsApp number
-                            <input class="lux-input mt-2" type="tel" id="phone" placeholder="+917028111146" required>
-                        </label>
-                        <label class="field-label">Age
-                            <input class="lux-input mt-2" type="number" id="age" min="1" max="120" placeholder="Age" required>
-                        </label>
-                        <label class="field-label sm:col-span-2">Service
-                            <select class="lux-input mt-2" id="service" required>
-                                {% for service in services %}
-                                <option value="{{ service.name }}" data-duration="{{ service.duration }}" data-price="{{ service.price }}">{{ service.name }} - Rs. {{ service.price }} · {{ service.duration }}</option>
-                                {% endfor %}
-                            </select>
-                        </label>
-                        <label class="field-label">Date
-                            <input class="lux-input mt-2" type="date" id="appointmentDate" value="{{ today_date }}" required>
-                        </label>
-                        <label class="field-label">Time slot
-                            <select class="lux-input mt-2" id="slot" required>
-                                {% for time_slot in time_slots %}
-                                <option value="{{ time_slot.slot_time }}" {% if time_slot.state != "available" %}disabled{% endif %}>
-                                    {{ time_slot.slot_time }} - {{ "Available" if time_slot.state == "available" else "Booked" }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </label>
-                    </div>
-
-                    <!-- Slot Chips -->
-                    <div id="slotChipsContainer" class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                        {% for time_slot in time_slots %}
-                        <button type="button"
-                            class="slot-chip {{ time_slot.state }}"
-                            data-slot="{{ time_slot.slot_time }}"
-                            {% if time_slot.state != "available" %}disabled{% endif %}>
-                            <span>{{ time_slot.slot_time }}</span>
-                            <small>{{ time_slot.state|title }}</small>
-                        </button>
-                        {% endfor %}
-                    </div>
-
-                    <button class="mt-7 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#d6b56d] px-6 py-4 font-bold text-black shadow-[0_18px_45px_rgba(214,181,109,0.22)] transition hover:-translate-y-0.5 hover:bg-[#f2d78a]" type="submit">
-                        <span class="button-text">Confirm Booking</span>
-                        <span class="button-spinner hidden h-5 w-5 animate-spin rounded-full border-2 border-black/30 border-t-black"></span>
-                        <i data-lucide="arrow-right" class="h-5 w-5"></i>
-                    </button>
-                    <div id="message" class="message mt-4 text-sm font-semibold text-white/70" aria-live="polite"></div>
-                </form>
-            </div>
-        </section>
-
-        <!-- Services Section -->
-        <section id="services" class="mx-auto max-w-7xl px-5 py-20 lg:px-8">
-            <div class="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-                <div>
-                    <p class="text-sm font-bold uppercase tracking-[0.3em] text-[#d6b56d]">Services</p>
-                    <h2 class="mt-3 font-display text-4xl font-bold md:text-5xl">Signature treatments</h2>
-                </div>
-                <p class="max-w-xl text-white/60">Curated salon rituals with transparent pricing, duration, and live slot booking.</p>
-            </div>
-
-            <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <!-- Tab: Haircut & Styling -->
+        <div class="tab-panel active" id="tab-haircut">
+            <div class="service-cards fade-up">
                 {% for service in services %}
-                <button class="service-card group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.06] text-left shadow-xl transition duration-300 hover:-translate-y-1 hover:border-[#d6b56d]/50 hover:bg-white/[0.09]" type="button" data-service="{{ service.name }}">
-                    <!-- Gradient accent strip -->
-                    <div class="h-1.5 w-full bg-gradient-to-r from-[#d6b56d] via-[#f2d78a] to-[#d6b56d] opacity-60 transition duration-300 group-hover:opacity-100"></div>
-                    <div class="p-7">
-                        <div class="mb-5 flex items-center justify-between">
-                            <span class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-[#d6b56d]/12 text-[#f2d78a] transition duration-300 group-hover:bg-[#d6b56d]/20 group-hover:shadow-[0_0_25px_rgba(214,181,109,0.15)]">
-                                <i data-lucide="scissors" class="h-6 w-6"></i>
-                            </span>
-                            <span class="rounded-full border border-[#d6b56d]/30 bg-[#d6b56d]/8 px-4 py-1.5 text-sm font-bold text-[#f2d78a]">Rs. {{ service.price }}</span>
+                <button class="service-card" type="button" data-service="{{ service.name }}" aria-label="Select {{ service.name }}">
+                    <div class="service-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm0 0h7m-7 6-5.38 5.38A2 2 0 0 0 1 15.76L4.24 19l6.21-6.21M18 3a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm0 6-5 5"/></svg>
+                    </div>
+                    <p class="service-card-type">Premium Service</p>
+                    <h3 class="service-card-name font-display">{{ service.name }}</h3>
+                    <p class="service-card-duration">{{ service.duration }} · Expert Styling</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">
+                            Rs. {{ service.price }}
+                            <span>Starting from</span>
                         </div>
-                        <h3 class="text-xl font-bold text-white">{{ service.name }}</h3>
-                        <p class="mt-2 text-sm text-white/50">{{ service.duration }} premium appointment</p>
-                        <div class="mt-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#d6b56d]/70 transition duration-300 group-hover:text-[#f2d78a]">
-                            <span>Book now</span>
-                            <i data-lucide="arrow-right" class="h-3.5 w-3.5"></i>
-                        </div>
+                        <span class="service-book-btn">
+                            Book
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </span>
                     </div>
                 </button>
                 {% endfor %}
             </div>
-        </section>
+        </div>
 
-        <!-- Contact Section -->
-        <section id="contact" class="border-t border-white/10 bg-[#0a0a0a]">
-            <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8">
-                <div class="mb-12 text-center">
-                    <p class="text-sm font-bold uppercase tracking-[0.3em] text-[#d6b56d]">Get in Touch</p>
-                    <h2 class="mt-3 font-display text-4xl font-bold md:text-5xl">Contact Us</h2>
-                </div>
-
-                <div class="grid gap-6 md:grid-cols-3">
-                    <!-- Address -->
-                    <div class="group flex flex-col items-center rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 text-center transition duration-300 hover:border-[#d6b56d]/40 hover:bg-white/[0.07]">
-                        <span class="mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-[#d6b56d]/12 text-[#f2d78a] transition duration-300 group-hover:bg-[#d6b56d]/20">
-                            <i data-lucide="map-pin" class="h-7 w-7"></i>
-                        </span>
-                        <h3 class="text-lg font-bold text-white">Our Address</h3>
-                        <p class="mt-3 leading-relaxed text-white/60">Kothrud, Pune<br>Maharashtra, India</p>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="group flex flex-col items-center rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 text-center transition duration-300 hover:border-[#d6b56d]/40 hover:bg-white/[0.07]">
-                        <span class="mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-[#d6b56d]/12 text-[#f2d78a] transition duration-300 group-hover:bg-[#d6b56d]/20">
-                            <i data-lucide="mail" class="h-7 w-7"></i>
-                        </span>
-                        <h3 class="text-lg font-bold text-white">Email</h3>
-                        <a href="mailto:riteshpatil702811@gmail.com" class="mt-3 break-all text-white/60 transition hover:text-[#f2d78a]">riteshpatil702811@gmail.com</a>
-                    </div>
-
-                    <!-- Phone -->
-                    <div class="group flex flex-col items-center rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 text-center transition duration-300 hover:border-[#d6b56d]/40 hover:bg-white/[0.07]">
-                        <span class="mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-[#d6b56d]/12 text-[#f2d78a] transition duration-300 group-hover:bg-[#d6b56d]/20">
-                            <i data-lucide="phone" class="h-7 w-7"></i>
-                        </span>
-                        <h3 class="text-lg font-bold text-white">Phone</h3>
-                        <a href="tel:+917028111146" class="mt-3 text-white/60 transition hover:text-[#f2d78a]">+91 7028111146</a>
+        <!-- Other tabs (static showcase) -->
+        <div class="tab-panel" id="tab-coloring">
+            <div class="service-cards fade-up">
+                <div class="service-card">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22C6.5 22 2 17.5 2 12A10 10 0 0 1 12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10z"/><path d="M12 2v20M2 12h20"/></svg></div>
+                    <p class="service-card-type">Women</p>
+                    <h3 class="service-card-name font-display">Balayage</h3>
+                    <p class="service-card-duration">150 min · Expert Colorist</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. 3500 <span>Starting from</span></div>
+                        <a href="#booking" class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-white/10 bg-[#050505]">
-        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-5 py-8 text-sm text-white/40 md:flex-row lg:px-8">
-            <p>&copy; 2026 Ritesh Luxe Salon Studio. All rights reserved.</p>
-            <div class="flex items-center gap-6">
-                <a href="#services" class="transition hover:text-[#f2d78a]">Services</a>
-                <a href="#booking" class="transition hover:text-[#f2d78a]">Booking</a>
-                <a href="#contact" class="transition hover:text-[#f2d78a]">Contact</a>
+                <div class="service-card">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22C6.5 22 2 17.5 2 12A10 10 0 0 1 12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10z"/><path d="M12 2v20M2 12h20"/></svg></div>
+                    <p class="service-card-type">Women</p>
+                    <h3 class="service-card-name font-display">Global Color</h3>
+                    <p class="service-card-duration">90 min · All Shades</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. 1800 <span>Starting from</span></div>
+                        <a href="#booking" class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22C6.5 22 2 17.5 2 12A10 10 0 0 1 12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10z"/><path d="M12 2v20M2 12h20"/></svg></div>
+                    <p class="service-card-type">Men</p>
+                    <h3 class="service-card-name font-display">Hair Highlights</h3>
+                    <p class="service-card-duration">60 min · Subtle Tone</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. 1200 <span>Starting from</span></div>
+                        <a href="#booking" class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
 
-    <div id="toast" class="toast hidden"></div>
-
-    <div id="successModal" class="fixed inset-0 z-[80] hidden place-items-center bg-black/75 px-5 backdrop-blur">
-        <div class="modal-pop max-w-md rounded-[2rem] border border-[#d6b56d]/30 bg-[#101010] p-8 text-center shadow-2xl">
-            <div class="mx-auto grid h-20 w-20 place-items-center rounded-full bg-emerald-400/15 text-emerald-300">
-                <i data-lucide="badge-check" class="h-10 w-10"></i>
+        <div class="tab-panel" id="tab-bridal">
+            <div class="service-cards fade-up">
+                <div class="service-card">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+                    <p class="service-card-type">Bridal</p>
+                    <h3 class="service-card-name font-display">Bridal Makeup</h3>
+                    <p class="service-card-duration">180 min · Full Look</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. 8000 <span>Starting from</span></div>
+                        <a href="#booking" class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+                    <p class="service-card-type">Bridal</p>
+                    <h3 class="service-card-name font-display">Bridal Hair Styling</h3>
+                    <p class="service-card-duration">120 min · Updo & More</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. 5000 <span>Starting from</span></div>
+                        <a href="#booking" class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                    </div>
+                </div>
             </div>
-            <h3 class="mt-6 font-display text-3xl font-bold">Booking Confirmed</h3>
-            <p id="successModalText" class="mt-3 text-white/65"></p>
-            <button id="closeSuccessModal" class="mt-7 rounded-full bg-[#d6b56d] px-6 py-3 font-bold text-black transition hover:bg-[#f2d78a]">Done</button>
+        </div>
+
+        <div class="tab-panel" id="tab-spa">
+            <div class="service-cards fade-up">
+                {% for service in services %}
+                {% if "Spa" in service.name %}
+                <button class="service-card" type="button" data-service="{{ service.name }}">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                    <p class="service-card-type">Spa Treatment</p>
+                    <h3 class="service-card-name font-display">{{ service.name }}</h3>
+                    <p class="service-card-duration">{{ service.duration }} · Relaxation</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. {{ service.price }} <span>Starting from</span></div>
+                        <span class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+                    </div>
+                </button>
+                {% endif %}
+                {% endfor %}
+                <div class="service-card">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                    <p class="service-card-type">Spa</p>
+                    <h3 class="service-card-name font-display">Deep Conditioning</h3>
+                    <p class="service-card-duration">60 min · Nourishing</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. 1500 <span>Starting from</span></div>
+                        <a href="#booking" class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                    <p class="service-card-type">Spa</p>
+                    <h3 class="service-card-name font-display">Scalp Treatment</h3>
+                    <p class="service-card-duration">45 min · Revitalizing</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. 900 <span>Starting from</span></div>
+                        <a href="#booking" class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-facials">
+            <div class="service-cards fade-up">
+                {% for service in services %}
+                {% if "Facial" in service.name %}
+                <button class="service-card" type="button" data-service="{{ service.name }}">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+                    <p class="service-card-type">Skin Care</p>
+                    <h3 class="service-card-name font-display">{{ service.name }}</h3>
+                    <p class="service-card-duration">{{ service.duration }} · Glow Treatment</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. {{ service.price }} <span>Starting from</span></div>
+                        <span class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+                    </div>
+                </button>
+                {% endif %}
+                {% endfor %}
+                <div class="service-card">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+                    <p class="service-card-type">Skin Care</p>
+                    <h3 class="service-card-name font-display">Gold Facial</h3>
+                    <p class="service-card-duration">75 min · Luxury Glow</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. 2200 <span>Starting from</span></div>
+                        <a href="#booking" class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+                    <p class="service-card-type">Skin Care</p>
+                    <h3 class="service-card-name font-display">Cleanup Facial</h3>
+                    <p class="service-card-duration">45 min · Brightening</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. 800 <span>Starting from</span></div>
+                        <a href="#booking" class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-extensions">
+            <div class="service-cards fade-up">
+                <div class="service-card">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3C8 3 5 6 5 9c0 5 7 12 7 12s7-7 7-12c0-3-3-6-7-6z"/></svg></div>
+                    <p class="service-card-type">Women</p>
+                    <h3 class="service-card-name font-display">Tape Extensions</h3>
+                    <p class="service-card-duration">180 min · Natural Look</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. 6000 <span>Starting from</span></div>
+                        <a href="#booking" class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3C8 3 5 6 5 9c0 5 7 12 7 12s7-7 7-12c0-3-3-6-7-6z"/></svg></div>
+                    <p class="service-card-type">Women</p>
+                    <h3 class="service-card-name font-display">Clip-in Extensions</h3>
+                    <p class="service-card-duration">90 min · Volume Add</p>
+                    <div class="service-card-footer">
+                        <div class="service-card-price">Rs. 3500 <span>Starting from</span></div>
+                        <a href="#booking" class="service-book-btn">Book <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</section>
 
-    <script src="/static/script.js?v=5"></script>
+<!-- ========================
+     STYLISTS SECTION
+     ======================== -->
+<section class="stylists-section" id="stylists">
+    <div class="container">
+        <div class="stylists-header fade-up">
+            <div>
+                <p class="section-eyebrow">Meet The Team</p>
+                <h2 class="section-title font-display">Our Stylists</h2>
+            </div>
+            <div class="slider-nav">
+                <button class="slider-btn" id="stylistPrev" aria-label="Previous stylist">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
+                </button>
+                <button class="slider-btn" id="stylistNext" aria-label="Next stylist">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="stylist-slider-wrapper">
+            <div class="stylist-slider" id="stylistSlider">
+
+                <!-- Slide 1 -->
+                <div class="stylist-slide">
+                    <div class="stylist-image">
+                        <img src="/static/stylist_one.png" alt="Priya Sharma – Senior Hair Stylist" loading="lazy">
+                    </div>
+                    <div class="stylist-content">
+                        <p class="stylist-number">01</p>
+                        <h3 class="stylist-name font-display">Priya Sharma</h3>
+                        <p class="stylist-role">Senior Hair Stylist</p>
+                        <p class="stylist-bio">
+                            With over 8 years of experience in premium hair styling, Priya specializes in balayage, bridal styling, and editorial hair art. Her precision and eye for detail make every visit transformational.
+                        </p>
+                        <span class="stylist-exp">8+ Years Experience</span>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="stylist-slide">
+                    <div class="stylist-image">
+                        <img src="/static/stylist_two.png" alt="Ritesh Patil – Creative Director" loading="lazy">
+                    </div>
+                    <div class="stylist-content">
+                        <p class="stylist-number">02</p>
+                        <h3 class="stylist-name font-display">Ritesh Patil</h3>
+                        <p class="stylist-role">Creative Director & Founder</p>
+                        <p class="stylist-bio">
+                            Ritesh founded this studio with a singular vision — bringing world-class salon experiences to Pune. Trained in Mumbai and internationally, he leads the creative direction and handles our most complex transformations.
+                        </p>
+                        <span class="stylist-exp">10+ Years Experience</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="slider-dots" id="stylistDots">
+            <button class="slider-dot active" aria-label="Slide 1"></button>
+            <button class="slider-dot" aria-label="Slide 2"></button>
+        </div>
+    </div>
+</section>
+
+<!-- ========================
+     ABOUT SECTION
+     ======================== -->
+<section class="about-section" id="about">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-image fade-in">
+                <img src="/static/salon_about.png" alt="Ritesh Luxe Salon interior – Kothrud, Pune" loading="lazy">
+                <div class="about-image-badge">
+                    Est. 2020
+                    <small>Kothrud, Pune</small>
+                </div>
+            </div>
+
+            <div class="about-content fade-up">
+                <div>
+                    <p class="section-eyebrow">Our Story</p>
+                    <h2 class="section-title font-display">About Us</h2>
+                </div>
+
+                <p>
+                    Ritesh Luxe Salon was founded with a single passion — to create a space where luxury meets craft. We believe every visit should feel like a retreat, and every service should feel personal.
+                </p>
+                <p>
+                    Located in the heart of Kothrud, Pune, our boutique studio brings together the finest techniques in hair care, styling, and beauty — delivered by a team of dedicated professionals who treat your hair as their art.
+                </p>
+                <p>
+                    From precision haircuts and balayage to bridal packages and spa treatments, we offer an experience curated for discerning clients who expect nothing but the best.
+                </p>
+
+                <div class="about-stats">
+                    <div class="about-stat">
+                        <strong>{{ stats.total_bookings }}+</strong>
+                        <span>Happy Clients</span>
+                    </div>
+                    <div class="about-stat">
+                        <strong>{{ services|length }}</strong>
+                        <span>Signature Services</span>
+                    </div>
+                    <div class="about-stat">
+                        <strong>6+</strong>
+                        <span>Years Experience</span>
+                    </div>
+                    <div class="about-stat">
+                        <strong>5★</strong>
+                        <span>Client Rating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================
+     LOOKBOOK SECTION
+     ======================== -->
+<section class="lookbook-section" id="lookbook">
+    <div class="container">
+        <div class="lookbook-header fade-up">
+            <div>
+                <p class="section-eyebrow">Our Portfolio</p>
+                <h2 class="section-title font-display">Our Work</h2>
+            </div>
+            <p class="section-subtitle">A curated showcase of our most celebrated hair transformations.</p>
+        </div>
+
+        <div class="lookbook-grid fade-up">
+            <div class="lookbook-item">
+                <img src="/static/lookbook_bridal.png" alt="Bridal hair styling – Ritesh Luxe Salon" loading="lazy">
+                <div class="lookbook-item-label">Bridal Styling</div>
+            </div>
+            <div class="lookbook-item">
+                <img src="/static/lookbook_color.png" alt="Hair coloring – Balayage" loading="lazy">
+                <div class="lookbook-item-label">Balayage</div>
+            </div>
+            <div class="lookbook-item">
+                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80" alt="Fashion hair – editorial style" loading="lazy">
+                <div class="lookbook-item-label">Editorial</div>
+            </div>
+            <div class="lookbook-item">
+                <img src="https://images.unsplash.com/photo-1582095133179-bfd08e2fb6b8?auto=format&fit=crop&w=600&q=80" alt="Men's precision cut" loading="lazy">
+                <div class="lookbook-item-label">Men's Cut</div>
+            </div>
+            <div class="lookbook-item">
+                <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=600&q=80" alt="Hair spa treatment" loading="lazy">
+                <div class="lookbook-item-label">Hair Spa</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================
+     BOOKING SECTION
+     ======================== -->
+<section class="booking-section" id="booking">
+    <div class="container">
+        <div class="fade-up" style="text-align:center; margin-bottom:3rem;">
+            <p class="section-eyebrow" style="justify-content:center;">Reserve Your Visit</p>
+            <h2 class="section-title font-display">Book Appointment</h2>
+        </div>
+
+        <div class="booking-grid fade-up">
+            <div class="booking-image">
+                <img src="/static/booking_salon.png" alt="Book at Ritesh Luxe Salon" loading="lazy">
+            </div>
+
+            <div class="booking-form-wrap">
+                <p class="section-eyebrow">Online Booking</p>
+                <h3 class="section-title font-display" style="font-size:1.75rem; margin-bottom:0.5rem;">Reserve Your Visit</h3>
+                <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:2rem;">Fill in the form below and we will confirm your appointment.</p>
+
+                <form class="booking-form" id="bookingForm">
+                    <div id="booking-anchor"></div>
+
+                    <div class="form-field">
+                        <label for="name">Full Name</label>
+                        <input class="form-input" type="text" id="name" placeholder="Your full name" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="phone">Phone / WhatsApp Number</label>
+                        <input class="form-input" type="tel" id="phone" placeholder="+91 7028111146" required>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-field">
+                            <label for="age">Age</label>
+                            <input class="form-input" type="number" id="age" min="1" max="120" placeholder="Your age" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="appointmentDate">Date</label>
+                            <input class="form-input" type="date" id="appointmentDate" value="{{ today_date }}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="service">Service</label>
+                        <select class="form-input" id="service" required>
+                            {% for service in services %}
+                            <option value="{{ service.name }}" data-duration="{{ service.duration }}" data-price="{{ service.price }}">
+                                {{ service.name }} — Rs. {{ service.price }} · {{ service.duration }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Select Time Slot</label>
+                        <div class="slot-chips-wrap" id="slotChipsContainer">
+                            {% for time_slot in time_slots %}
+                            <button type="button"
+                                class="slot-chip {{ time_slot.state }}"
+                                data-slot="{{ time_slot.slot_time }}"
+                                {% if time_slot.state != "available" %}disabled{% endif %}>
+                                {{ time_slot.slot_time }}
+                                <small>{{ time_slot.state }}</small>
+                            </button>
+                            {% endfor %}
+                        </div>
+                        <!-- Hidden select for form value -->
+                        <select class="form-input" id="slot" required style="margin-top:0.75rem;">
+                            {% for time_slot in time_slots %}
+                            <option value="{{ time_slot.slot_time }}" {% if time_slot.state != "available" %}disabled{% endif %}>
+                                {{ time_slot.slot_time }} — {{ "Available" if time_slot.state == "available" else "Booked" }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button class="form-submit" type="submit" id="bookingSubmitBtn">
+                        <span class="button-text">Book Appointment</span>
+                        <span class="button-spinner hidden" style="display:none;">
+                            <svg style="width:16px;height:16px;animation:spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                        </span>
+                        <svg style="width:14px;height:14px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </button>
+
+                    <div id="message" class="form-message" aria-live="polite"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================
+     TESTIMONIALS
+     ======================== -->
+<section class="testimonials-section" id="testimonials">
+    <div class="container">
+        <div class="testimonials-inner">
+            <p class="section-eyebrow">Client Love</p>
+            <h2 class="section-title font-display">What Our Clients Say</h2>
+
+            <div class="testimonial-slider">
+                <div class="testimonial-slides" id="testimonialSlides">
+
+                    <div class="testimonial-slide">
+                        <div class="testimonial-stars">
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                        <p class="testimonial-quote">
+                            "Best salon experience I have ever had in Pune. The ambiance is calming and the team is incredibly talented. My balayage looked exactly as I imagined."
+                        </p>
+                        <p class="testimonial-author">— Ananya Mehta, Kothrud</p>
+                    </div>
+
+                    <div class="testimonial-slide">
+                        <div class="testimonial-stars">
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                        <p class="testimonial-quote">
+                            "Ritesh's team did my bridal hair and makeup and I was absolutely blown away. I received so many compliments. Truly a luxury experience."
+                        </p>
+                        <p class="testimonial-author">— Sneha Joshi, Pune</p>
+                    </div>
+
+                    <div class="testimonial-slide">
+                        <div class="testimonial-stars">
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                        <p class="testimonial-quote">
+                            "I have been coming here for over two years and the consistency is outstanding. The hair spa treatments are deeply relaxing and my hair has never been healthier."
+                        </p>
+                        <p class="testimonial-author">— Prachi Kulkarni, Kothrud</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="testimonial-dots" id="testimonialDots">
+                <button class="testimonial-dot active" aria-label="Testimonial 1"></button>
+                <button class="testimonial-dot" aria-label="Testimonial 2"></button>
+                <button class="testimonial-dot" aria-label="Testimonial 3"></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================
+     INSTAGRAM SECTION
+     ======================== -->
+<section class="instagram-section">
+    <div class="container">
+        <div class="instagram-header fade-up">
+            <h2 class="section-title font-display" style="font-size:1.75rem;">@riteshluxesalon</h2>
+            <p>Follow us on Instagram for daily inspiration</p>
+        </div>
+        <div class="instagram-grid fade-up">
+            <div class="instagram-item">
+                <img src="https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?auto=format&fit=crop&w=400&q=80" alt="Salon work 1" loading="lazy">
+                <div class="instagram-item-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+            </div>
+            <div class="instagram-item">
+                <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=400&q=80" alt="Salon work 2" loading="lazy">
+                <div class="instagram-item-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+            </div>
+            <div class="instagram-item">
+                <img src="/static/lookbook_bridal.png" alt="Bridal work" loading="lazy">
+                <div class="instagram-item-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+            </div>
+            <div class="instagram-item">
+                <img src="/static/lookbook_color.png" alt="Color work" loading="lazy">
+                <div class="instagram-item-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+            </div>
+            <div class="instagram-item">
+                <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=400&q=80" alt="Spa work" loading="lazy">
+                <div class="instagram-item-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+            </div>
+            <div class="instagram-item">
+                <img src="/static/salon_hero.png" alt="Salon interior" loading="lazy">
+                <div class="instagram-item-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================
+     CONTACT SECTION
+     ======================== -->
+<section class="contact-section" id="contact">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-form-side fade-up">
+                <p class="section-eyebrow">Get In Touch</p>
+                <h2 class="section-title font-display">Contact Us</h2>
+
+                <form class="contact-form" id="contactFormMain">
+                    <div class="form-grid-2">
+                        <div>
+                            <label for="contactFirst">First Name</label>
+                            <input class="contact-input" type="text" id="contactFirst" placeholder="First name" required>
+                        </div>
+                        <div>
+                            <label for="contactLast">Last Name</label>
+                            <input class="contact-input" type="text" id="contactLast" placeholder="Last name" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="contactEmail">Email Address</label>
+                        <input class="contact-input" type="email" id="contactEmail" placeholder="your@email.com" required>
+                    </div>
+                    <div>
+                        <label for="contactMessage">Message</label>
+                        <textarea class="contact-input" id="contactMessage" placeholder="Write your message here..." required></textarea>
+                    </div>
+                    <button class="contact-submit" type="submit">Send Message</button>
+                </form>
+            </div>
+
+            <div class="contact-info-side fade-up">
+                <h3 class="section-title font-display" style="font-size:1.75rem;">Ritesh Luxe Salon</h3>
+
+                <div class="contact-info-items">
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.73 12 19.79 19.79 0 0 1 1.77 3.18 2 2 0 0 1 3.75 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <p class="contact-info-label">Phone</p>
+                            <p class="contact-info-value"><a href="tel:+917028111146">+91 7028111146</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </div>
+                        <div>
+                            <p class="contact-info-label">Email</p>
+                            <p class="contact-info-value"><a href="mailto:riteshpatil702811@gmail.com">riteshpatil702811@gmail.com</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div>
+                            <p class="contact-info-label">Working Hours</p>
+                            <p class="contact-info-value">
+                                Mon: Closed<br>
+                                Tue–Sat: 10 AM – 8 PM<br>
+                                Sun: Appointment Only
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <div>
+                            <p class="contact-info-label">Address</p>
+                            <p class="contact-info-value">Kothrud, Pune<br>Maharashtra, India</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-social">
+                    <a href="#" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    </a>
+                    <a href="#" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                    </a>
+                    <a href="#" aria-label="WhatsApp">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                    </a>
+                    <a href="https://www.youtube.com" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================
+     FOOTER
+     ======================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-inner">
+            <p class="footer-logo font-display">Ritesh Luxe Salon</p>
+            <p class="footer-tagline">Premium Hair Studio · Kothrud, Pune</p>
+            <ul class="footer-links">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#booking">Book Now</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="/admin">Admin</a></li>
+            </ul>
+            <p class="footer-copy">© 2026 Ritesh Luxe Salon. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- Success Modal -->
+<div id="successModal" class="success-modal" role="dialog" aria-modal="true" aria-labelledby="successModalTitle">
+    <div class="success-modal-inner">
+        <div class="success-modal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3 class="font-display" id="successModalTitle">Booking Confirmed</h3>
+        <p id="successModalText">Your appointment has been successfully booked.</p>
+        <button class="success-modal-close" id="closeSuccessModal">Done</button>
+    </div>
+</div>
+
+<style>
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.button-spinner svg { display: inline-block; }
+</style>
+
+<script src="/static/script.js?v=6"></script>
 </body>
 </html>
