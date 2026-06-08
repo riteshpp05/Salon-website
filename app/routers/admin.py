@@ -36,9 +36,8 @@ def is_authenticated(request: Request) -> bool:
 
 @router.get("/admin/login", response_class=HTMLResponse)
 def admin_login_page(request: Request):
-    """Render the admin login page. Redirect to dashboard if already logged in."""
-    if is_authenticated(request):
-        return RedirectResponse(url="/admin", status_code=302)
+    """Render the admin login page and clear any existing session to enforce fresh login."""
+    request.session.clear()
     return templates.TemplateResponse(
         request,
         "admin_login.html",
@@ -55,7 +54,7 @@ def admin_login_submit(
     """Process the admin login form."""
     if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
         request.session["admin_logged_in"] = True
-        return RedirectResponse(url="/admin", status_code=302)
+        return RedirectResponse(url="/admin/dashboard", status_code=302)
 
     return templates.TemplateResponse(
         request,
@@ -77,11 +76,21 @@ def admin_logout(request: Request):
     return RedirectResponse(url="/admin/login", status_code=302)
 
 
-# ── Admin Dashboard (protected) ───────────────────────────────────────────────
+# ── Admin Root & Dashboard ──────────────────────────────────────────────────
 
-@router.get("/admin", response_class=HTMLResponse)
+@router.get("/admin")
+def admin_root(request: Request):
+    """
+    Redirect /admin to /admin/login.
+    Because /admin/login clears the session, this guarantees a fresh login 
+    every time a user clicks the Admin button or visits /admin.
+    """
+    return RedirectResponse(url="/admin/login", status_code=302)
+
+
+@router.get("/admin/dashboard", response_class=HTMLResponse)
 def admin_dashboard(request: Request, db: Session = Depends(get_db)):
-    """Main admin dashboard — requires authentication."""
+    """Main admin dashboard — requires fresh authentication."""
     if not is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=302)
 

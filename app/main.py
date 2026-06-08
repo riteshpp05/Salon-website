@@ -130,7 +130,7 @@ app.add_middleware(
     SessionMiddleware,
     secret_key=_secret_key,
     session_cookie="salon_session",
-    max_age=3600 * 8,    # 8-hour session
+    max_age=None,    # Session-only cookie, clears when browser closes
     https_only=False,
     same_site="lax",
 )
