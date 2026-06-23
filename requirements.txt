@@ -9,3 +9,4 @@ httpx
 selenium
 webdriver-manager
 itsdangerous
+psycopg2-binary
