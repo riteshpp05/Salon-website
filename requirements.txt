@@ -10,3 +10,4 @@ selenium
 webdriver-manager
 itsdangerous
 psycopg2-binary
+a2wsgi
