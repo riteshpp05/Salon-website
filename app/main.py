@@ -120,7 +120,7 @@ finally:
 
 # --------------- FastAPI App --------------- #
 
-app = FastAPI(title="Salon Booking App")
+app = FastAPI(title="THE HAIR ENGINEER")
 
 _secret_key = os.getenv("SECRET_KEY", "fallback-insecure-key-set-SECRET_KEY-in-env")
 if _secret_key == "fallback-insecure-key-set-SECRET_KEY-in-env":
@@ -191,5 +191,5 @@ def home(request: Request):
 @app.on_event("startup")
 async def startup_event():
     logger.info("=" * 60)
-    logger.info("Salon Booking App starting up (Phase 2)...")
+    logger.info("THE HAIR ENGINEER starting up (Phase 2)...")
     logger.info("=" * 60)

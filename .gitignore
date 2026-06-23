@@ -37,3 +37,11 @@ Thumbs.db
 
 # WhatsApp Session
 whatsapp_session/
+
+# Database Backups & Temp Files
+*backup*.json
+*.bak
+*.swp
+
+# Database Config / Secrets
+.neon
